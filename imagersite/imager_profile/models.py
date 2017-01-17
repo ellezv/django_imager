@@ -7,8 +7,19 @@ from django.dispatch import receiver
 
 # Create your models here.
 
+class ActiveUsersManager(models.Manager):
+    """Active user manager."""
+
+    def get_query_set(self):
+        """Get the full query of active users."""
+        return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
+
+
 class ImagerProfile(models.Model):
     """Profile class for all imager users."""
+
+    objects = models.Manager()
+    active = ActiveUsersManager()
 
     user = models.OneToOneField(
         User,
@@ -57,12 +68,6 @@ class ImagerProfile(models.Model):
         return str(profile)
 
 
-class ActiveUsersManager(models.Manager):
-    """Active user manager."""
-
-    def get_query_set(self):
-        """Get the full query of active users."""
-        return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
 
 
 @receiver(post_save, sender=User)
