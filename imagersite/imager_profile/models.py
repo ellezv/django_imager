@@ -38,8 +38,35 @@ class ImagerProfile(models.Model):
         blank=True,
         null=True)
 
+    def is_active(self):
+        """Return True if user is active, False if not."""
+        return self.user.is_active
+
+    def __str__(self):
+        """Return a string representation of the imager profile instance."""
+        profile = {
+            'address': self.address,
+            'bio': self.bio,
+            'website': self.website,
+            'hireable': self.hireable,
+            'travel_radius': self.travel_radius,
+            'phone number': self.phone_number,
+            'camera type': self.camera_type,
+            'type of photography': self.photography_type
+        }
+        return str(profile)
+
+
+class ActiveUsersManager(models.Manager):
+    """Active user manager."""
+
+    def get_query_set(self):
+        """Get the full query of active users."""
+        return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
+
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
+    """When a user is created, it gets a profile."""
     new_profile = ImagerProfile(user=instance)
     new_profile.save()
