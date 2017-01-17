@@ -75,8 +75,14 @@ WSGI_APPLICATION = 'imagersite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'imagerdb',
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'IMAGER_TESTDB'
     }
 }
 
