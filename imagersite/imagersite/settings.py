@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imager_profile'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,7 @@ DATABASES = {
         'PORT': '5432',
         'TEST': {
             'NAME': 'IMAGER_TESTDB'
+        }
     }
 }
 
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
