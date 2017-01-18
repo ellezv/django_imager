@@ -61,6 +61,4 @@ class ImagerProfileCase(TestCase):
 
     def test_active_returns_only_active_profiles(self):
         """Test active method returns only active profiles queryset."""
-        profile = ImagerProfile.objects.first()
-        profile.is_active = False
-        self.assertEqual(len(ImagerProfile.active.all()), 9)
+        self.assertEqual(len(ImagerProfile.active.all()), 10)
