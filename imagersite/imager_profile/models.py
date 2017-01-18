@@ -10,7 +10,7 @@ from django.dispatch import receiver
 class ActiveUsersManager(models.Manager):
     """Active user manager."""
 
-    def get_query_set(self):
+    def get_queryset(self):
         """Get the full query of active users."""
         return super(ActiveUsersManager, self).get_queryset().filter(user__is_active=True)
 

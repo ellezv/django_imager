@@ -27,6 +27,7 @@ class ImagerProfileCase(TestCase):
         self.assertTrue(ImagerProfile.objects.count() == 10)
 
     def test_profile_same_data_as_user(self):
+        """Test that the profile has the same data as the user."""
         uid = User.objects.first().id
         self.assertTrue(ImagerProfile.objects.filter(id=uid).first().user.username == User.objects.first().username)
 
@@ -48,3 +49,18 @@ class ImagerProfileCase(TestCase):
         """Test that the profile isactive param is true."""
         self.assertTrue(ImagerProfile.objects.first().is_active)
 
+    def test_profile_string_method_object_not_in(self):
+        """Test that the string representation doesn't contain "object"."""
+        profile = ImagerProfile.objects.first()
+        self.assertNotIn("object", str(profile))
+
+    def test_profile_string_method_returns_string(self):
+        """Test that the string representation is a string."""
+        profile = ImagerProfile.objects.first()
+        self.assertIsInstance(str(profile), str)
+
+    def test_active_returns_only_active_profiles(self):
+        """Test active method returns only active profiles queryset."""
+        profile = ImagerProfile.objects.first()
+        profile.is_active = False
+        self.assertEqual(len(ImagerProfile.active.all()), 9)
