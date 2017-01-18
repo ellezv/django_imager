@@ -29,3 +29,22 @@ class ImagerProfileCase(TestCase):
     def test_profile_same_data_as_user(self):
         uid = User.objects.first().id
         self.assertTrue(ImagerProfile.objects.filter(id=uid).first().user.username == User.objects.first().username)
+
+    def test_delete_user_cascades(self):
+        """Test that deleting a User deletes the Profile."""
+        uid = User.objects.first().id
+        test_user = User.objects.filter(id=uid).first()
+        test_user.delete()
+        self.assertTrue(len(ImagerProfile.objects.filter(id=uid)) == 0)
+
+    def test_delete_user_cascades_model_len(self):
+        """Test that deleting a User deletes the Profile in the model length."""
+        uid = User.objects.first().id
+        test_user = User.objects.filter(id=uid).first()
+        test_user.delete()
+        self.assertTrue(len(ImagerProfile.objects.all()) == 9)
+
+    def test_profile_model_is_active(self):
+        """Test that the profile isactive param is true."""
+        self.assertTrue(ImagerProfile.objects.first().is_active)
+
