@@ -7,10 +7,11 @@ from django.contrib.auth import authenticate, login
 
 def home_view(request):
     """Home view for the imager site."""
-    # return render(request,
-    #               'base.html',
-    #               {'data': data})
-    return HttpResponse('This is the Home Page!')
+    data = "Nothing right now"
+    return render(request,
+                  'imagersite/base.html',
+                  {'data': data})
+    # return HttpResponse('This is the Home Page!')
 
 
 # def login_view(request):
