@@ -9,7 +9,7 @@ def home_view(request):
     """Home view for the imager site."""
     data = "Nothing right now"
     return render(request,
-                  'imagersite/base.html',
+                  'imagersite/home.html',
                   {'data': data})
     # return HttpResponse('This is the Home Page!')
 
