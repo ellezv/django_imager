@@ -59,6 +59,13 @@ class ImagerProfileCase(TestCase):
         profile = ImagerProfile.objects.first()
         self.assertIsInstance(str(profile), str)
 
-    def test_active_returns_only_active_profiles(self):
+    def test_active_returns_only_active(self):
         """Test active method returns only active profiles queryset."""
         self.assertEqual(len(ImagerProfile.active.all()), 10)
+
+    def test_active_returns_only_active_profiles(self):
+        """Test active method returns only active profiles queryset."""
+        this_user = User.objects.all()[0]
+        this_user.is_active = False
+        this_user.save()
+        self.assertEqual(ImagerProfile.active.count(), ImagerProfile.objects.count() - 1)
