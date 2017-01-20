@@ -30,8 +30,8 @@ class ImagerProfile(models.Model):
     bio = models.CharField(max_length=500, blank=True, null=True)
     website = models.CharField(max_length=255, blank=True, null=True)
     hireable = models.BooleanField(default=True)
-    travel_radius = models.IntegerField(default=100)
-    phone_number = models.CharField(max_length=10)
+    travel_radius = models.IntegerField(default=100, blank=True, null=True)
+    phone_number = models.CharField(max_length=10, blank=True, null=True)
     camera_choices = (
         ('nikon', 'Nikon'),
         ('canon', 'Canon'),

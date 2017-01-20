@@ -23,7 +23,7 @@ class Image(models.Model):
     published = models.CharField(max_length=255, choices=pub_choices)
     image = models.ImageField(upload_to="media")
     owner = models.ForeignKey(ImagerProfile,
-                              default=1,
+                              # default=1,
                               related_name='images',
                               blank=True,
                               null=True
@@ -50,11 +50,11 @@ class Album(models.Model):
     published = models.CharField(max_length=255, choices=pub_choices)
     cover_image = models.ImageField(upload_to="")
     owner = models.ForeignKey(ImagerProfile, related_name='albums',
-                              default=1,
+                              # default=1,
                               blank=True,
                               null=True
                               )
-    image = models.ManyToManyField(Image)
+    images = models.ManyToManyField(Image, related_name='albums')
 
     def __str__(self):
         """Return title as string."""
