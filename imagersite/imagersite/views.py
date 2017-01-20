@@ -12,19 +12,3 @@ def home_view(request):
                   'imagersite/home.html',
                   {'data': data})
     # return HttpResponse('This is the Home Page!')
-
-
-# def login_view(request):
-#     """Login view for imager site."""
-#     if request.method == 'GET':
-#         return render(request,
-#                       'login.html',
-#                       {}
-#                       )
-#     username = request.POST['username']
-#     password = request.POST['password']
-#     user = authenticate(username=username, password=password)
-#     if user is not None:
-#         login(request, user)
-#     else:
-#         return HttpResponse('Bad login')
