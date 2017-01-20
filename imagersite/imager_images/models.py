@@ -29,6 +29,10 @@ class Image(models.Model):
                               null=True
                               )
 
+    def __str__(self):
+        """Return title as string."""
+        return self.title
+
 
 class Album(models.Model):
     """Album model for the Imager App."""
@@ -50,3 +54,8 @@ class Album(models.Model):
                               blank=True,
                               null=True
                               )
+    image = models.ManyToManyField(Image)
+
+    def __str__(self):
+        """Return title as string."""
+        return self.title
