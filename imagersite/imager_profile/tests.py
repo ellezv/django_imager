@@ -61,4 +61,13 @@ class ImagerProfileCase(TestCase):
 
     def test_active_returns_only_active_profiles(self):
         """Test active method returns only active profiles queryset."""
-        self.assertEqual(len(ImagerProfile.active.all()), 10)
+        this_user = User.objects.all()[0]
+        this_user.is_active = False
+        this_user.save()
+        self.assertEqual(ImagerProfile.active.count(), ImagerProfile.objects.count() - 1)
+
+#test changes on profle mean changes on user profile
+
+#those tests should be in imager site instaed of profile
+
+# class ProfileFrontEndTEsts(TestCase)
