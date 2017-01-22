@@ -55,3 +55,27 @@ class FrontEndTests(TestCase):
             "username": new_user.username,
             "password": "test_password"}, follow=True)
         self.assertEqual(response.redirect_chain[0][1], 302)
+
+    def test_can_register_new_user(self):
+        """Test a new user can register."""
+        self.assertTrue(User.objects.count() == 0)
+        self.client.post('/registration/register/', {
+            "username": "test_user",
+            "email": "test@user.com",
+            "password1": "testpassword",
+            "password2": "testpassword"
+        })
+        self.assertTrue(User.objects.count() == 1)
+        self.assertTrue(User.objects.first().username == "test_user")
+
+    def test_register_user_is_inactive(self):
+        """Test that a newly registered user is inactive."""
+        self.assertTrue(ImagerProfile.active.count() == 0)
+        self.client.post('/registration/register/', {
+            "username": "test_user",
+            "email": "test@user.com",
+            "password1": "testpassword",
+            "password2": "testpassword"
+        })
+        self.assertTrue(User.objects.count() == 1)
+        self.assertTrue(ImagerProfile.active.count() == 0)
