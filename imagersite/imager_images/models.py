@@ -13,17 +13,19 @@ class Image(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_published = models.DateTimeField(blank=True, null=True)
-    data_modified = models.DateTimeField(default=timezone.now)
+    date_modified = models.DateTimeField(default=timezone.now)
     date_uploaded = models.DateTimeField(default=timezone.now)
     pub_choices = (
         ('private', 'Private'),
         ('shared', 'Shared'),
         ('public', 'Public'),
     )
-    published = models.CharField(max_length=255, choices=pub_choices)
+    published = models.CharField(max_length=255,
+                                 choices=pub_choices,
+                                 blank=True,
+                                 null=True)
     image = models.ImageField(upload_to="media")
     owner = models.ForeignKey(ImagerProfile,
-                              # default=1,
                               related_name='images',
                               blank=True,
                               null=True
@@ -40,14 +42,18 @@ class Album(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_published = models.DateTimeField(blank=True, null=True)
-    data_modified = models.DateTimeField(default=timezone.now)
+    date_modified = models.DateTimeField(default=timezone.now)
     date_created = models.DateTimeField(default=timezone.now)
     pub_choices = (
         ('private', 'Private'),
         ('shared', 'Shared'),
         ('public', 'Public'),
     )
-    published = models.CharField(max_length=255, choices=pub_choices)
+    published = models.CharField(max_length=255,
+                                 choices=pub_choices,
+                                 blank=True,
+                                 null=True
+                                 )
     cover_image = models.ImageField(upload_to="")
     owner = models.ForeignKey(ImagerProfile, related_name='albums',
                               # default=1,
