@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.7"
+  - "3.5"
+
+# command to install dependencies
+services:
+  -postgresql
+
+before_script:
+  - psql -c "create database imagerdb;" -U postgres
+
+install:
+  - pip install -r requirements.pip
+
+# command to run tests
+script: 
+  - python imagersite/manage.py migrate
+  - python imagersite/manage.py test
