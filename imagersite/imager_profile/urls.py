@@ -20,5 +20,7 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    url(r'^$', profile_view, name="profile")
+    url(r'^$', profile_view, name="profile"),
+    url(r'^(w+ regex)$', profile_view, name="profile")
+
 ]
