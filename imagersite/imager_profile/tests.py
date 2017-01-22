@@ -66,8 +66,10 @@ class ImagerProfileCase(TestCase):
         this_user.save()
         self.assertEqual(ImagerProfile.active.count(), ImagerProfile.objects.count() - 1)
 
-#test changes on profle mean changes on user profile
-
-#those tests should be in imager site instaed of profile
-
-# class ProfileFrontEndTEsts(TestCase)
+    def test_change_profile_changes_user_profile(self):
+        """Test changes on profile mean changes on user profile as well."""
+        this_profile = ImagerProfile.objects.first()
+        this_profile.bio = "random bio"
+        this_profile.save()
+        this_user = User.objects.first()
+        self.assertTrue(this_user.profile.bio == this_profile.bio)
