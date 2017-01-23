@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^registration/', include("registration.backends.hmac.urls")),
-    url(r'^profile/', include("imager_profile.urls"))
+    url(r'^profile/', include("imager_profile.urls")),
+    url(r'^images/library/', include("imager_images.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
