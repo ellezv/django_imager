@@ -1,5 +1,6 @@
 # Django Imager
-[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=front_end_2)](https://travis-ci.org/ellezv/django_imager)
+[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=front_end_2)](https://travis-ci.org/ellezv/django_imager)  
+
 **Author:** Julien Wilson and Maelle Vance
 
 
@@ -69,9 +70,37 @@ This will show you which tests have failed, which tests have passed.
 - is active (boolean)
 - api "ImageProfile.active" returns a query set of all active users
 
+
+*Image*
+
+- title (unicode)
+- description (unicode)
+- date published (datetime)
+- date modified (datetime)
+- date uploaded (datetime)
+- published (choicefield : private, shared or public)
+- image (imagefield)
+- owner (related to ImagerProfile)
+
+
+*Album*
+
+- title (unicode)
+- description (unicode)
+- date published (datetime)
+- date modified (datetime)
+- date created (datetime)
+- published (choicefield: private, shared or public)
+- cover image : (imagefield)
+- owner (related to ImagerProfile)
+- images (related to Image model)
+
 ## Current URL Routes
 
 - `/admin`
 - `/login`
 - `/logout`
 - `/registration/register/`
+- `/profile`
+- `/profile/username`
+- `/images/library`
