@@ -1,5 +1,5 @@
 # Django Imager
-[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=models-2)](https://travis-ci.org/ellezv/django_imager)
+[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=front_end_2)](https://travis-ci.org/ellezv/django_imager)
 **Author:** Julien Wilson and Maelle Vance
 
 
