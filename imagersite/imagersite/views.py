@@ -14,5 +14,3 @@ def home_view(request):
         'imagersite/home.html',
         {'static_background': img.image.url}
     )
-# note: when our database has images, we can query it and return a random path
-# as the static background.

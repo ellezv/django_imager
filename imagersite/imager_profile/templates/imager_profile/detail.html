@@ -16,12 +16,36 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <h3 class="brand-heading">This is your Profile</h3>
+                        {% if profile %}
                         <p class="intro-text">Here's some stuff about it</p>
                         <ul>
-                            <li>Username</li>
-                            <li>number of public images</li>
-                            <li>number of private images</li>
-                        </ul>
+                            <li>Username: {{profile.user.username}}</li>
+
+                            <li>number of public images: {{ public_images }}</li>
+
+                            {% if user == profile.user %}
+                            <li>number of private images: {{ private_images }}</li>
+                            {% endif %}
+                            <li>address: {{ profile.address }}</li>
+
+                            <li>bio: {{ profile.bio }}</li>
+
+                            <li>website: {{ profile.website }}</li>
+
+                            <li>hireable: {{ profile.hireable }}</li>
+
+                            <li>travel radius: {{ profile.travel_radius }}</li>
+
+                            <li>phone number: {{ profile.phone_number }}</li>
+
+                            <li>camera type: {{ profile.camera_type }}</li>
+
+                            <li>type of photography: {{ profile.photography }}</li>
+
+                        </ul> 
+                        {% else %}
+                        <h3>{{ error }}</h3>
+                        {% endif %}
                 </div>
             </div>
         </div>

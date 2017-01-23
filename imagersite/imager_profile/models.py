@@ -70,9 +70,9 @@ class ImagerProfile(models.Model):
             'camera type': self.camera_type,
             'type of photography': self.photography_type
         }
-        return str(profile)
+        return str(self.user.username)
 
-
+        
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
     """When a user is created, it gets a profile."""

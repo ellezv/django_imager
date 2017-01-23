@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from imager_profile.views import profile_view
+from imager_profile.views import profile_view, user_profile_view
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
     url(r'^$', profile_view, name="profile"),
-    url(r'^(w+ regex)$', profile_view, name="profile")
-
+    url(r'^(?P<username>\w+)/$', user_profile_view, name="user_profile")
 ]
