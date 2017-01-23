@@ -23,8 +23,9 @@
 
                             <li>number of public images: {{ public_images }}</li>
 
+                            {% if user == profile.user %}
                             <li>number of private images: {{ private_images }}</li>
-
+                            {% endif %}
                             <li>address: {{ profile.address }}</li>
 
                             <li>bio: {{ profile.bio }}</li>

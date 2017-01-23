@@ -22,5 +22,4 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^$', profile_view, name="profile"),
     url(r'^(?P<username>\w+)/$', user_profile_view, name="user_profile")
-
 ]

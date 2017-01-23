@@ -72,7 +72,7 @@ class ImagerProfile(models.Model):
         }
         return str(self.user.username)
 
-
+        
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
     """When a user is created, it gets a profile."""
