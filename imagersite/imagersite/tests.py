@@ -3,15 +3,33 @@ from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from imager_profile.models import ImagerProfile
 
-from imager_profile.tests import UserFactory
+from imager_images.tests import UserFactory, ImageFactory, AlbumFactory
 
 
 class FrontEndTests(TestCase):
     """Tests for our front-end."""
 
     def setUp(self):
+        """Set up the tests."""
         self.client = Client()
         self.request = RequestFactory()
+        # self.user = [UserFactory.create() for i in range(10)]
+        self.images = [ImageFactory.create() for i in range(10)]
+        self.album = [AlbumFactory.create() for i in range(10)]
+
+    def test_profile_view(self):
+        """Test profile view status code."""
+        from imager_profile.views import profile_view
+        req = self.request.get("/profile")
+        some_user = UserFactory.create()
+        req.user = some_user
+        response = profile_view(req)
+        self.assertEqual(response.status_code, 200)
+
+    def test_profile_route_uses_right_template(self):
+        """Test profile view renders correct template."""
+        response = self.client.get("/profile")
+        self.assertTemplateUsed(response, 'imager_profile/detail.html')
 
     def test_home_view_status(self):
         """Test home view is accessible."""
@@ -58,24 +76,24 @@ class FrontEndTests(TestCase):
 
     def test_can_register_new_user(self):
         """Test a new user can register."""
-        self.assertTrue(User.objects.count() == 0)
+        user_count = User.objects.count()
         self.client.post('/registration/register/', {
             "username": "test_user",
             "email": "test@user.com",
             "password1": "testpassword",
             "password2": "testpassword"
         })
-        self.assertTrue(User.objects.count() == 1)
+        self.assertTrue(User.objects.count() == user_count + 1)
         self.assertTrue(User.objects.first().username == "test_user")
 
     def test_register_user_is_inactive(self):
         """Test that a newly registered user is inactive."""
-        self.assertTrue(ImagerProfile.active.count() == 0)
+        user_count = User.objects.count()
         self.client.post('/registration/register/', {
             "username": "test_user",
             "email": "test@user.com",
             "password1": "testpassword",
             "password2": "testpassword"
         })
-        self.assertTrue(User.objects.count() == 1)
-        self.assertTrue(ImagerProfile.active.count() == 0)
+        self.assertTrue(User.objects.count() == user_count + 1)
+        self.assertTrue(ImagerProfile.active.count() == user_count)
