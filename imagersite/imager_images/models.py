@@ -24,7 +24,7 @@ class Image(models.Model):
                                  choices=pub_choices,
                                  blank=True,
                                  null=True)
-    image = models.ImageField(upload_to="media")
+    image = models.ImageField(upload_to="")
     owner = models.ForeignKey(ImagerProfile,
                               related_name='images',
                               blank=True,
