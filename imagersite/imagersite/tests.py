@@ -10,8 +10,21 @@ class FrontEndTests(TestCase):
     """Tests for our front-end."""
 
     def setUp(self):
+        """Set up the tests."""
         self.client = Client()
         self.request = RequestFactory()
+
+    # def test_profile_view(self):
+    #     """Test profile view status code."""
+    #     from imagersite.views import profile_view
+    #     req = self.request.get("/profile")
+    #     response = profile_view(req)
+    #     self.assertEqual(response.tatus_code, 200)
+
+    # def test_profile_route_uses_right_template(self):
+    #     """Test profile view renders correct template."""
+    #     response = self.client.get("/profile")
+    #     self.assertTemplateUsed(response, 'imager_profile/detail.html')
 
     def test_home_view_status(self):
         """Test home view is accessible."""
