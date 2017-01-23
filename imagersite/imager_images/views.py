@@ -7,6 +7,7 @@ def library_view(request):
     if request.user.is_authenticated():
         albums = request.user.profile.albums.all()
         images = request.user.profile.images.all()
+        # import pdb; pdb.set_trace()
         return render(request, "imager_images/library.html", {
             'albums': albums,
             'images': images})

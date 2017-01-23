@@ -1,10 +1,10 @@
-<!-- {% extends "imagersite/base.html" %}
+{% extends "imagersite/base.html" %}
 
 {% block title %}
 
 <title>Your Library</title>
 
-{% endblock %} -->
+{% endblock %}
 
 {% block content %}
     <header class="intro" style="background-image: url({{ static_background }})">
@@ -12,8 +12,25 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h3 class="brand-heading">This is your Libray</h3>
+                        <h3 class="brand-heading">
+                        <br>
+                        This is your Library</h3>
                         <p class="intro-text">Here's some albums and photos you took.</p>
+                        <h3> Albums: </h3>
+                        {% for album in albums %}
+                        <li>
+                        <img src="{{ album.cover_image.url }}" width="100px" height="100px">
+                        <p>{{ album.description }}</p>
+                        </li>
+                        {% endfor %}
+
+                        <h3> Pictures: </h3>
+                        {% for image in images %}
+                        <li>
+                        <img src="{{ image.image.url }}" width="100px" height="100px">
+                        <p>{{ image.description }}</p>
+                        </li>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
