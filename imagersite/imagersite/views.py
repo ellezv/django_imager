@@ -7,7 +7,6 @@ from imager_images.models import Image, Album
 def home_view(request):
     """Home view for the imager site."""
     ps_rand_image = Image.objects.all()[4].image.url
-    import pdb; pdb.set_trace()
     return render(request,
                   'imagersite/home.html',
                   {'static_background': ps_rand_image})
