@@ -56,9 +56,15 @@
                     <li>
                         <a class="page-scroll" href="#about">About</a>
                     </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
                     {% if user.is_authenticated %}
                     <li>
                         <a class="page-scroll" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
                     </li>
                     {% else %}
                     <li>
@@ -68,12 +74,8 @@
                         <a class="page-scroll" href="{% url 'registration_register' %}">Register</a>
                     </li>
                     {% endif %}
-                    <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="{% url 'profile' %}">Profile</a>
-                    </li>
+
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
