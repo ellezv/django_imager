@@ -1,6 +1,6 @@
 """Views for ou imager_images app."""
 from django.shortcuts import render
-from imager_images.models import Image
+from imager_images.models import Image, Album
 # Create your views here.
 
 
@@ -20,3 +20,10 @@ def photos_view(request):
     photos = Image.objects.filter(published='public').all()
     return render(request, "imager_images/photos.html", {
         'photos': photos})
+
+
+def albums_view(request):
+    """View for all public albums."""
+    albums = Album.objects.filter(published='public').all()
+    return render(request, "imager_images/albums.html", {
+        'albums': albums})

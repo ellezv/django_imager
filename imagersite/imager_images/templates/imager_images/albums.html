@@ -2,7 +2,7 @@
 
 {% block title %}
 
-<title>Public Photos</title>
+<title>Public Albums</title>
 
 {% endblock %}
 
@@ -14,15 +14,15 @@
                     <div class="col-md-8 col-md-offset-2">
                         <h3 class="brand-heading">
                         <br>
-                        Photos. Photos Everywhere.</h3>
-                        <p class="intro-text">Here are some photos people took.</p>
+                        Albums. Albums Everywhere.</h3>
+                        <p class="intro-text">Here are some albums people created.</p>
 
-                        <h3> Public Photos: </h3>
+                        <h3> Public Albums: </h3>
                         <ul>
-                        {% for photo in photos %}
+                        {% for album in albums %}
                         <li>
-                        <img src="{{ photo.image.url }}" width="100px" height="100px">
-                        <p>{{ photo.description }}</p>
+                        <img src="{{ album.cover_image.url }}" width="100px" height="100px">
+                        <p>{{ album.description }}</p>
                         </li>
                         {% endfor %}
                         </ul>
