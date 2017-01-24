@@ -1,0 +1,35 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Your Library</title>
+
+{% endblock %}
+
+{% block content %}
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h3 class="brand-heading">
+                        <br>
+                        Photos. Photos Everywhere.</h3>
+                        <p class="intro-text">Here are some photos people took.</p>
+
+                        <h3> Public Photos: </h3>
+                        <ul>
+                        {% for photo in photos %}
+                        <li>
+                        <img src="{{ photo.image.url }}" width="100px" height="100px">
+                        <p>{{ photo.description }}</p>
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
