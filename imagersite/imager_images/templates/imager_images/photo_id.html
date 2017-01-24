@@ -1,0 +1,28 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Public Photos</title>
+
+{% endblock %}
+
+{% block content %}
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h3 class="brand-heading">
+                        <br>
+                        {{ photo.title }}</h3>
+                        <img src="{{ photo.image.url }}" style="max-width: 80%"">
+                        <p>{{ photo.description }}</p>
+                        <p> Author: <a href=" {% url 'user_profile' username=photo.owner.user.username %}">{{ photo.owner.user.username }}</a></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

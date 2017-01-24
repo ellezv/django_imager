@@ -27,3 +27,17 @@ def albums_view(request):
     albums = Album.objects.filter(published='public').all()
     return render(request, "imager_images/albums.html", {
         'albums': albums})
+
+
+def photo_id_view(request, pk):
+    """View for an individual photo."""
+    photo = Image.objects.get(pk=pk)
+    return render(request, 'imager_images/photo_id.html', {
+        "photo": photo})
+
+
+def album_id_view(request):
+    """View for an individual album."""
+    album = Album.objects.get(id=id)
+    return render(request, 'imager_images/album_id.html', {
+        "album": album})
