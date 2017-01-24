@@ -1,0 +1,33 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Album</title>
+
+{% endblock %}
+
+{% block content %}
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h3 class="brand-heading">
+                        <br>
+                        <h3> {{ album.title }} </h3>
+                        <h3>Author: <a href="{% url 'user_profile' username=album.owner.user.username %}">{{ album.owner.user.username }}</a></h3>
+                        <ul>
+                        {% for image in images %}
+                        <li>
+                        <img src="{{ image.image.url }}" style="width: 100%">
+                        <p>{{ image.description }}</p>
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

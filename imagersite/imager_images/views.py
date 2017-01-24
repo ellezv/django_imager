@@ -36,8 +36,10 @@ def photo_id_view(request, pk):
         "photo": photo})
 
 
-def album_id_view(request):
+def album_id_view(request, pk):
     """View for an individual album."""
-    album = Album.objects.get(id=id)
+    album = Album.objects.get(pk=pk)
+    images = album.images.all()
     return render(request, 'imager_images/album_id.html', {
-        "album": album})
+        "album": album,
+        "images": images})
