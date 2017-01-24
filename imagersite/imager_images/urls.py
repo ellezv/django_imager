@@ -18,5 +18,6 @@ from imager_images.views import library_view
 
 
 urlpatterns = [
-    url(r'^$', library_view, name="library"),
+    url(r'^library/$', library_view, name="library"),
+    url(r'^photos/$', library_view, name="photos")
 ]
