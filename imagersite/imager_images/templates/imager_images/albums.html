@@ -21,7 +21,9 @@
                         <ul>
                         {% for album in albums %}
                         <li>
+                        <a href="{% url 'individual_album' pk=album.pk %}">
                         <img src="{{ album.cover_image.url }}" width="100px" height="100px">
+                        </a>
                         <p>{{ album.description }}</p>
                         </li>
                         {% endfor %}

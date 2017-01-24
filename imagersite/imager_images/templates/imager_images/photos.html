@@ -21,7 +21,8 @@
                         <ul>
                         {% for photo in photos %}
                         <li>
-                        <img src="{{ photo.image.url }}" width="100px" height="100px">
+                        <a href="{% url 'individual_photo' pk=photo.pk %}">
+                        <img src="{{ photo.image.url }}" width="100px" height="100px"></a>
                         <p>{{ photo.description }}</p>
                         </li>
                         {% endfor %}
