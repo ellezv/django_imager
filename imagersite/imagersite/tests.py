@@ -127,4 +127,4 @@ class FrontEndTests(TestCase):
 
         response = self.client.get(reverse_lazy('user_profile',
                                                 kwargs={'username': user2.username}))
-        self.assertTrue('maxrebo' in str(response.content))
+        self.assertTrue(user2.username in str(response.content))

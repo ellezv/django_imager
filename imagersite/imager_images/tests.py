@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.conf import settings    
+from django.conf import settings
+from django.urls import reverse_lazy
+
 from imager_profile.models import ImagerProfile
 from imager_images.models import Image, Album
 
@@ -30,6 +32,8 @@ class AlbumFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Album
     title = factory.Sequence(lambda n: "Album {}".format(n))
+    cover_image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
+    description = "Calvin and hobbes album"
 
 
 class ImageTestCase(TestCase):
@@ -265,3 +269,23 @@ class ImageTestCase(TestCase):
         album1.save()
         album2.save()
         self.assertTrue(user1.profile.albums.count() == 2)
+
+    def test_logged_in_user_has_library(self):
+        """A logged in user has a library."""
+        user = UserFactory.create()
+        user.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("library"))
+        self.assertTrue(response.status_code == 200)
+
+    def test_logged_in_user_sees_their_albums(self):
+        user = UserFactory.create()
+        album1 = Album.objects.first()
+        album2 = Album.objects.all()[1]
+        user.profile.albums.add(album1)
+        user.profile.albums.add(album2)
+        user.save()
+        self.client.force_login(user)
+
+        response = self.client.get(reverse_lazy("library"))
+        self.assertTrue(album1.description in str(response.content))
