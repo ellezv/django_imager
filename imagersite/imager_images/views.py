@@ -1,18 +1,31 @@
-"""Views for ou imager_images app."""
+"""Views for our imager_images app."""
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from imager_images.models import Image, Album
-# Create your views here.
 
 
-def library_view(request):
-    """View for the user's own library."""
-    if request.user.is_authenticated():
-        albums = request.user.profile.albums.all()
-        images = request.user.profile.images.all()
-        # import pdb; pdb.set_trace()
-        return render(request, "imager_images/library.html", {
-            'albums': albums,
-            'images': images})
+class LibraryView(TemplateView):
+    """A class based view for Library view."""
+
+    template_name = "imager_images/library.html"
+
+    def get_context_data(self):
+        """Extending get_context_data method."""
+        if self.request.user.is_authenticated():
+            albums = self.request.user.profile.albums.all()
+            images = self.request.user.profile.images.all()
+
+        return {'albums': albums, 'images': images}
+
+# def library_view(request):
+#     """View for the user's own library."""
+#     if request.user.is_authenticated():
+#         albums = request.user.profile.albums.all()
+#         images = request.user.profile.images.all()
+#         # import pdb; pdb.set_trace()
+#         return render(request, "imager_images/library.html", {
+#             'albums': albums,
+#             'images': images})
 
 
 def photos_view(request):
