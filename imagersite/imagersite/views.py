@@ -9,8 +9,9 @@ def home_view(request):
     """Home view for the imager site."""
     import random
     img_lst = Image.objects.all()
+    import pdb; pdb.set_trace()
     if not len(img_lst):
-        img_url = settings.MEDIA_URL + "banff.jpg"
+        img_url = settings.STATIC_URL + "banff.jpg"
     else:
         img_url = random.choice(img_lst).image.url
     return render(
