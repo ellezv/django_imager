@@ -15,10 +15,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
+                        {% if profile %}
                         <h3 class="brand-heading">
                         <br>
                         This is {{ profile.user.username }}'s Profile</h3>
-                        {% if profile %}
                         <p class="intro-text">Here's some stuff about it</p>
                         <ul>
                             <li>Username: {{profile.user.username}}</li>

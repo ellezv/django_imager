@@ -1,6 +1,5 @@
 """Views for our imager_images app."""
 from django.views.generic import TemplateView
-from django.shortcuts import render
 from imager_images.models import Image, Album
 
 
