@@ -1,10 +1,12 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings    
 from imager_profile.models import ImagerProfile
 from imager_images.models import Image, Album
-from django.utils import timezone
-import factory
 
+import factory
 # Create your tests here.
 
 
@@ -21,6 +23,7 @@ class ImageFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Image
     title = factory.Sequence(lambda n: "Image {}".format(n))
+    image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
 
 
 class AlbumFactory(factory.django.DjangoModelFactory):

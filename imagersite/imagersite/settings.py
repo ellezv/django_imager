@@ -89,7 +89,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
         'TEST': {
-            'NAME': 'IMAGER_TESTDB'
+            'NAME': 'IMAGER_TEST_DB'
         }
     }
 }

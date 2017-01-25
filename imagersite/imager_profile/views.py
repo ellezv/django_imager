@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 
@@ -19,7 +17,7 @@ def profile_view(request):
                                 'private_images': private_images
                                 })
     else:
-        error_message = "Yout're not signed in."
+        error_message = "You're not signed in."
         return render(request, "imager_profile/detail.html",
                                {'error': error_message
                                 })
