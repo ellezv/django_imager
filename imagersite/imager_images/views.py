@@ -17,22 +17,22 @@ class LibraryView(TemplateView):
 
         return {'albums': albums, 'images': images}
 
-# def library_view(request):
-#     """View for the user's own library."""
-#     if request.user.is_authenticated():
-#         albums = request.user.profile.albums.all()
-#         images = request.user.profile.images.all()
-#         # import pdb; pdb.set_trace()
-#         return render(request, "imager_images/library.html", {
-#             'albums': albums,
-#             'images': images})
 
+class PhotoView(TemplateView):
+    """A class based view for Photo view."""
 
-def photos_view(request):
-    """View for all public photos."""
-    photos = Image.objects.filter(published='public').all()
-    return render(request, "imager_images/photos.html", {
-        'photos': photos})
+    template_name = "imager_images/photos.html"
+
+    def get_context_data(self):
+        """Extending get_context_data method to add our data."""
+        photos = Image.objects.filter(published='public').all()
+        return {'photos': photos}
+
+# def photos_view(request):
+#     """View for all public photos."""
+#     photos = Image.objects.filter(published='public').all()
+#     return render(request, "imager_images/photos.html", {
+#         'photos': photos})
 
 
 def albums_view(request):
