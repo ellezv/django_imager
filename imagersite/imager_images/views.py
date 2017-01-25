@@ -51,10 +51,13 @@ class PhotoIdView(TemplateView):
         return {"photo": photo}
 
 
-def album_id_view(request, pk):
-    """View for an individual album."""
-    album = Album.objects.get(pk=pk)
-    images = album.images.all()
-    return render(request, 'imager_images/album_id.html', {
-        "album": album,
-        "images": images})
+class AlbumIdView(TemplateView):
+    """A class based view for individual album view."""
+
+    template_name = "imager_images/album_id.html"
+
+    def get_context_data(self, pk):
+        """Extend get_context_data method for our data to render."""
+        album = Album.objects.get(pk=pk)
+        images = album.images.all()
+        return {"album": album, "images": images}
