@@ -28,25 +28,27 @@ class PhotoView(TemplateView):
         photos = Image.objects.filter(published='public').all()
         return {'photos': photos}
 
-# def photos_view(request):
-#     """View for all public photos."""
-#     photos = Image.objects.filter(published='public').all()
-#     return render(request, "imager_images/photos.html", {
-#         'photos': photos})
+
+class AlbumView(TemplateView):
+    """Class based view for Album view."""
+
+    template_name = "imager_images/albums.html"
+
+    def get_context_data(self):
+        """Extending get_context_data method."""
+        albums = Album.objects.filter(published='public').all()
+        return {'albums': albums}
 
 
-def albums_view(request):
-    """View for all public albums."""
-    albums = Album.objects.filter(published='public').all()
-    return render(request, "imager_images/albums.html", {
-        'albums': albums})
+class PhotoIdView(TemplateView):
+    """Class based view for individual photo view."""
 
+    template_name = "imager_images/photo_id.html"
 
-def photo_id_view(request, pk):
-    """View for an individual photo."""
-    photo = Image.objects.get(pk=pk)
-    return render(request, 'imager_images/photo_id.html', {
-        "photo": photo})
+    def get_context_data(self, pk):
+        """Extending get_context_data method for our data."""
+        photo = Image.objects.get(pk=pk)
+        return {"photo": photo}
 
 
 def album_id_view(request, pk):
