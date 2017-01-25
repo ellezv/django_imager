@@ -1,4 +1,4 @@
-"""imagersite URL Configuration
+"""Imagersite URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from imager_profile.views import ProfileView, user_profile_view
+from imager_profile.views import ProfileView, UserProfileView
 
 
 urlpatterns = [
     url(r'^$', ProfileView.as_view(), name="profile"),
-    url(r'^(?P<username>\w+)/$', user_profile_view, name="user_profile")
+    url(r'^(?P<username>\w+)/$', UserProfileView.as_view(), name="user_profile")
 ]
