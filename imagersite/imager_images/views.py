@@ -78,21 +78,53 @@ class AddPhotoView(CreateView):
     """A class based view to add a picture."""
 
     template_name = 'imager_images/add_photo.html'
+    form_class = PhotoForm
 
-    def get_queryset(self):
-        queryset = Image.objects.all()
+    # def get_queryset(self):
+    #     queryset = Image.objects.all()
+    #     return queryset
 
-    def get_context_data(self):
-        """Extend get_context_data method for our data."""
-        # import pdb; pdb.set_trace()
-        if self.request.method == "POST":
-            form = PhotoForm(self.request.POST)
-            import pdb; pdb.set_trace()
-            if form.is_valid():
-                photo = form.save(commit=False)
-                photo.owner = self.request.user
-                photo.published_date = timezone.now()
-                photo.save()
-                return redirect('individual_photo', pk=photo.pk)
-        else:
-            return {"form": PhotoForm()}
+    # def get_context_data(self):
+    #     """Extend get_context_data method for our data."""
+    #     # import pdb; pdb.set_trace()
+    #     if self.request.method == "POST":
+    #         import pdb; pdb.set_trace()
+    #         form = PhotoForm(self.request.POST)
+    #         if form.is_valid():
+    #             photo = form.save(commit=False)
+    #             photo.owner = self.request.user.profile
+    #             photo.published_date = timezone.now()
+    #             photo.save()
+    #             return redirect('individual_photo', pk=photo.pk)
+    #     else:
+    #         return {}
+
+class AddPhotoView(CreateView):
+    """A class based view to add a picture."""
+
+    model = Image
+    form_class = PhotoForm
+    template_name = 'imager_images/add_photo.html'
+    success_url = 'library'
+
+    # def get_context_data(self):
+    #     """Extend get_context_data method for our data."""
+    #     # import pdb; pdb.set_trace()
+    #     if self.request.method == "POST":
+    #         import pdb; pdb.set_trace()
+    #         form = PhotoForm(self.request.POST)
+    #         if form.is_valid():
+    #             photo = form.save(commit=False)
+    #             photo.owner = self.request.user.profile
+    #             photo.published_date = timezone.now()
+    #             photo.save()
+    #             return redirect('individual_photo', pk=photo.pk)
+    #     else:
+    #         return {}
+
+    def form_valid(self, form):
+        photo = form.save()
+        photo.owner = self.request.user.profile
+        photo.published_date = timezone.now()
+        photo.save()
+        return redirect('individual_photo', pk=photo.pk)

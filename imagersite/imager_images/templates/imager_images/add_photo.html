@@ -16,7 +16,8 @@
                         <br>
                         <h3> Add a photo </h3>
 
-                        <form method="POST" class="photo-form">{% csrf_token %}
+                        <form method="POST" class="photo-form" enctype="multipart/form-data">
+                        {% csrf_token %}
                         {{ form.as_p }}
             <button type="submit" class="save btn btn-default">Save</button>
                         </form>

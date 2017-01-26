@@ -29,5 +29,5 @@ urlpatterns = [
         AlbumIdView.as_view(),
         name="individual_album"),
     # url(r'^albums/add/$', AddAlbumView.as_view(), name="add_albums"),
-    url(r'^photos/add.$', AddPhotoView.as_view(), name="add_photos"),
+    url(r'^photos/add/$', AddPhotoView.as_view(), name="add_photos"),
 ]
