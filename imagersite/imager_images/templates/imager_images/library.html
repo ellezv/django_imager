@@ -14,6 +14,7 @@
                     <div class="col-md-8 col-md-offset-2">
                         <h3 class="brand-heading">
                         <br>
+                        {% if user.is_authenticated %}
                         This is your Library</h3>
                         <p class="intro-text">Here's some albums and photos you took.</p>
                         <h3> Albums: </h3>
@@ -31,6 +32,13 @@
                         <p>{{ image.description }}</p>
                         </li>
                         {% endfor %}
+                        {% else %}
+
+                        <h2>You must be <a href="{% url 'login' %}">logged in</a> to view your library.</h2>
+                        <h3>If you don't have an account you can <a href="{% url 'registration_register' %}">register now</a></h3>
+                        <h4>So we can own all of the photos you take</h2>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

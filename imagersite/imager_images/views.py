@@ -11,13 +11,13 @@ class LibraryView(TemplateView):
 
     template_name = "imager_images/library.html"
 
-
     def get_context_data(self):
         """Extending get_context_data method."""
         if self.request.user.is_authenticated():
             albums = self.request.user.profile.albums.all()
             images = self.request.user.profile.images.all()
-
+        else:
+            albums = images = None
         return {'albums': albums, 'images': images}
 
 
@@ -70,7 +70,6 @@ class AddPhotoView(CreateView):
     """A class based view to add a picture."""
 
     template_name = 'imager_images/add_photo.html'
-
 
     def get_queryset(self):
         queryset = Image.objects.all()
