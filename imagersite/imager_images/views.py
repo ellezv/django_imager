@@ -51,7 +51,11 @@ class PhotoIdView(TemplateView):
     def get_context_data(self, pk):
         """Extending get_context_data method for our data."""
         photo = Image.objects.get(pk=pk)
-        return {"photo": photo}
+        if photo.published == 'public' or photo.owner.user == self.request.user:
+            return {"photo": photo}
+        else:
+            error = "I'm sorry, that photo is not available."
+            return {"error": error}
 
 
 class AlbumIdView(TemplateView):
@@ -62,8 +66,12 @@ class AlbumIdView(TemplateView):
     def get_context_data(self, pk):
         """Extend get_context_data method for our data to render."""
         album = Album.objects.get(pk=pk)
-        images = album.images.all()
-        return {"album": album, "images": images}
+        if album.published == 'public' or album.owner.user == self.request.user:
+            images = album.images.all()
+            return {"album": album, "images": images}
+        else:
+            error = "I'm sorry, that album is not available."
+            return {"error": error}
 
 
 class AddPhotoView(CreateView):

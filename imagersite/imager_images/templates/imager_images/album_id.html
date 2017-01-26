@@ -14,6 +14,10 @@
                     <div class="col-md-8 col-md-offset-2">
                         <h3 class="brand-heading">
                         <br>
+                        {% if error %}
+                        <h3 class="brand-heading">
+                        {{ error }} </h3>
+                        {% else %}
                         <h3> {{ album.title }} </h3>
                         <h3>Author: <a href="{% url 'user_profile' username=album.owner.user.username %}">{{ album.owner.user.username }}</a></h3>
                         <ul>
@@ -23,6 +27,7 @@
                         <p>{{ image.description }}</p>
                         </li>
                         {% endfor %}
+                        {% endif %}
                         </ul>
                     </div>
                 </div>
