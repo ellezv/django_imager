@@ -2,7 +2,7 @@
 from django.views.generic import TemplateView, CreateView
 from imager_images.models import Image, Album
 from django.utils import timezone
-from imager_images.forms import PhotoForm
+from imager_images.forms import PhotoForm, AlbumForm
 from django.shortcuts import redirect
 
 
@@ -77,39 +77,35 @@ class AlbumIdView(TemplateView):
 class AddPhotoView(CreateView):
     """A class based view to add a picture."""
 
-    template_name = 'imager_images/add_photo.html'
-    form_class = PhotoForm
-
-    # def get_queryset(self):
-    #     queryset = Image.objects.all()
-    #     return queryset
-
-    # def get_context_data(self):
-    #     """Extend get_context_data method for our data."""
-    #     # import pdb; pdb.set_trace()
-    #     if self.request.method == "POST":
-    #         import pdb; pdb.set_trace()
-    #         form = PhotoForm(self.request.POST)
-    #         if form.is_valid():
-    #             photo = form.save(commit=False)
-    #             photo.owner = self.request.user.profile
-    #             photo.published_date = timezone.now()
-    #             photo.save()
-    #             return redirect('individual_photo', pk=photo.pk)
-    #     else:
-    #         return {}
-
-class AddPhotoView(CreateView):
-    """A class based view to add a picture."""
-
     model = Image
     form_class = PhotoForm
     template_name = 'imager_images/add_photo.html'
-    success_url = 'library'
+    # success_url = 'library'
 
     def form_valid(self, form):
+        """Execute if form is valid."""
         photo = form.save()
         photo.owner = self.request.user.profile
-        photo.published_date = timezone.now()
+        photo.date_uploaded = timezone.now()
+        photo.date_modified = timezone.now()
+        if photo.published == "public":
+            photo.published_date = timezone.now()
         photo.save()
         return redirect('individual_photo', pk=photo.pk)
+
+
+class AddAlbumView(CreateView):
+    """A class based view to add an Album."""
+
+    model = Album
+    form_class = AlbumForm
+    template_name = 'imager_images/add_album.html'
+    # success_url = 'library'
+
+    def form_valid(self, form):
+        """Execute if form is valid."""
+        album = form.save()
+        album.owner = self.request.user.profile
+        album.date_created = timezone.now()
+        album.save()
+        return redirect('individual_album', pk=album.pk)
