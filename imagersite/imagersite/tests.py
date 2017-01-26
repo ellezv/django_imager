@@ -21,9 +21,10 @@ class FrontEndTests(TestCase):
 
     def test_home_view_status(self):
         """Test home view is accessible."""
-        from imagersite.views import home_view
+        from imagersite.views import HomeView
         req = self.request.get(reverse_lazy('home'))
-        response = home_view(req)
+        view = HomeView.as_view()
+        response = view(req)
         self.assertEqual(response.status_code, 200)
 
     def test_home_route_uses_right_template(self):
@@ -48,7 +49,8 @@ class FrontEndTests(TestCase):
         """Test register view status code is 200."""
         from registration.backends.hmac.views import RegistrationView
         req = self.request.get(reverse_lazy('home'))
-        response = RegistrationView.as_view()(req)
+        reg_view = RegistrationView.as_view()
+        response = reg_view(req)
         self.assertEqual(response.status_code, 200)
 
     def test_login_view_redirects(self):
@@ -88,11 +90,12 @@ class FrontEndTests(TestCase):
 
     def test_profile_view(self):
         """Test profile view status code."""
-        from imager_profile.views import profile_view
+        from imager_profile.views import ProfileView
         req = self.request.get(reverse_lazy('profile'))
         some_user = UserFactory.create()
         req.user = some_user
-        response = profile_view(req)
+        view = ProfileView.as_view()
+        response = view(req)
         self.assertEqual(response.status_code, 200)
 
     def test_profile_route_uses_right_template(self):
@@ -106,9 +109,7 @@ class FrontEndTests(TestCase):
         user.username = "jabba"
         user.set_password('itspizza')
         user.save()
-
         self.client.force_login(user)
-
         response = self.client.get(reverse_lazy('user_profile',
                                                 kwargs={'username': user.username}))
         self.assertTrue('private images' in str(response.content))
@@ -124,7 +125,6 @@ class FrontEndTests(TestCase):
         user2.username = "maxrebo"
         user2.set_password("itsaband")
         user2.save()
-
         response = self.client.get(reverse_lazy('user_profile',
                                                 kwargs={'username': user2.username}))
         self.assertTrue(user2.username in str(response.content))
