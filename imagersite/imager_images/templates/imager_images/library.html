@@ -20,7 +20,9 @@
                         <h3> Albums: </h3>
                         {% for album in albums %}
                         <li>
+                        <a href="{% url 'individual_album' pk=album.pk %}">
                         <img src="{{ album.cover_image.url }}" width="100px" height="100px">
+                        </a>
                         <p>{{ album.description }}</p>
                         </li>
                         {% endfor %}
@@ -28,7 +30,9 @@
                         <h3> Pictures: </h3>
                         {% for image in images %}
                         <li>
+                        <a href="{% url 'individual_photo' pk=image.pk %}">
                         <img src="{{ image.image.url }}" width="100px" height="100px">
+                        </a>
                         <p>{{ image.description }}</p>
                         </li>
                         {% endfor %}
