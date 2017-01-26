@@ -1,4 +1,5 @@
-from django.test import TestCase
+
+from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -7,6 +8,7 @@ from django.urls import reverse_lazy
 
 from imager_profile.models import ImagerProfile
 from imager_images.models import Image, Album
+from imager_images.views import LibraryView
 
 import factory
 # Create your tests here.
@@ -41,6 +43,8 @@ class ImageTestCase(TestCase):
 
     def setUp(self):
         """User setup for tests."""
+        self.client = Client()
+        self.request = RequestFactory()
         self.users = [UserFactory.create() for i in range(10)]
         self.images = [ImageFactory.create() for i in range(10)]
         self.album = [AlbumFactory.create() for i in range(10)]
@@ -168,6 +172,7 @@ class ImageTestCase(TestCase):
         self.assertTrue(image2.albums.all()[0] == album1)
 
     def test_album_has_two_images(self):
+        """Test that an album has two images."""
         image1 = Image.objects.all()[0]
         image2 = Image.objects.all()[1]
         album1 = Album.objects.first()
@@ -270,8 +275,18 @@ class ImageTestCase(TestCase):
         album2.save()
         self.assertTrue(user1.profile.albums.count() == 2)
 
+    def test_libary_view_returns_200(self):
+        """Test Library View returns a 200."""
+        user = UserFactory.create()
+        user.save()
+        view = LibraryView.as_view()
+        req = self.request.get(reverse_lazy('library'))
+        req.user = user
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
+
     def test_logged_in_user_has_library(self):
-        """A logged in user has a library."""
+        """A logged in user gets a 200 resposne."""
         user = UserFactory.create()
         user.save()
         self.client.force_login(user)
@@ -279,6 +294,7 @@ class ImageTestCase(TestCase):
         self.assertTrue(response.status_code == 200)
 
     def test_logged_in_user_sees_their_albums(self):
+        """Test that a logged in user can see their images in library."""
         user = UserFactory.create()
         album1 = Album.objects.first()
         album2 = Album.objects.all()[1]
@@ -286,6 +302,5 @@ class ImageTestCase(TestCase):
         user.profile.albums.add(album2)
         user.save()
         self.client.force_login(user)
-
         response = self.client.get(reverse_lazy("library"))
         self.assertTrue(album1.description in str(response.content))
