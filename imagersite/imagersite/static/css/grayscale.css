@@ -110,6 +110,19 @@ a:focus {
 .navbar-custom .nav li.active a:hover {
   color: white;
 }
+
+.add-button {
+  size: 20px;
+  float: left;
+  margin-left: 22%;
+  color: blue;
+}
+
+
+.library-text {
+  clear: left;
+}
+
 @media (min-width: 768px) {
   .navbar-custom {
     padding: 20px 0;
@@ -149,6 +162,7 @@ a:focus {
 .intro .intro-body .intro-text {
   font-size: 18px;
 }
+
 @media (min-width: 768px) {
   .intro {
     height: 100%;

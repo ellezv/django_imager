@@ -16,7 +16,10 @@
                         <br>
                         {% if user.is_authenticated %}
                         This is your Library</h3>
-                        <p class="intro-text">Here's some albums and photos you took.</p>
+                        <p class="add-button" ><a href="{% url 'add_photos' %}"> Add Photo </a></p>
+                        <p class="add-button"><a href="{% url 'add_photos' %}"> Add Album </a></p>
+                        <br/>
+                        <p class="library-text" class="intro-text">Here's some albums and photos you took.</p>
                         <h3> Albums: </h3>
                         {% for album in albums %}
                         <li>

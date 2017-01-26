@@ -107,21 +107,6 @@ class AddPhotoView(CreateView):
     template_name = 'imager_images/add_photo.html'
     success_url = 'library'
 
-    # def get_context_data(self):
-    #     """Extend get_context_data method for our data."""
-    #     # import pdb; pdb.set_trace()
-    #     if self.request.method == "POST":
-    #         import pdb; pdb.set_trace()
-    #         form = PhotoForm(self.request.POST)
-    #         if form.is_valid():
-    #             photo = form.save(commit=False)
-    #             photo.owner = self.request.user.profile
-    #             photo.published_date = timezone.now()
-    #             photo.save()
-    #             return redirect('individual_photo', pk=photo.pk)
-    #     else:
-    #         return {}
-
     def form_valid(self, form):
         photo = form.save()
         photo.owner = self.request.user.profile
