@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 from imager_profile.models import ImagerProfile
 from imager_images.models import Image, Album
-from imager_images.views import LibraryView
+from imager_images.views import LibraryView, PhotoView, AlbumView, PhotoIdView, AlbumIdView
 
 import factory
 # Create your tests here.
@@ -304,3 +304,233 @@ class ImageTestCase(TestCase):
         self.client.force_login(user)
         response = self.client.get(reverse_lazy("library"))
         self.assertTrue(album1.description in str(response.content))
+
+    def test_photo_view_returns_200(self):
+        """Test that the photo view returns a 200."""
+        req = self.request.get(reverse_lazy('photos'))
+        view = PhotoView.as_view()
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_view_returns_public_photos(self):
+        """Test that the photo view returns public photos."""
+        image = ImageFactory()
+        image.published = 'public'
+        image.save()
+        req = self.request.get(reverse_lazy('photos'))
+        view = PhotoView.as_view()
+        response = view(req)
+        self.assertTrue(response.context_data['photos'].count() == 1)
+
+    def test_photo_view_doesnt_return_private_photos(self):
+        """Test that the photo view doesnt return private photos."""
+        image = ImageFactory()
+        image.published = 'private'
+        image.save()
+        req = self.request.get(reverse_lazy('photos'))
+        view = PhotoView.as_view()
+        response = view(req)
+        self.assertTrue(response.context_data['photos'].count() == 0)
+
+    def test_album_view_returns_200(self):
+        """Test that the album view returns a 200."""
+        req = self.request.get(reverse_lazy('albums'))
+        view = AlbumView.as_view()
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_view_returns_public_albums(self):
+        """Test that the album view returns public albums."""
+        album = AlbumFactory()
+        album.published = 'public'
+        album.save()
+        req = self.request.get(reverse_lazy('albums'))
+        view = AlbumView.as_view()
+        response = view(req)
+        self.assertTrue(response.context_data['albums'].count() == 1)
+
+    def test_album_view_doesnt_return_private_albums(self):
+        """Test that the album view doesnt return private albums."""
+        album = AlbumFactory()
+        album.published = 'private'
+        album.save()
+        req = self.request.get(reverse_lazy('albums'))
+        view = AlbumView.as_view()
+        response = view(req)
+        self.assertTrue(response.context_data['albums'].count() == 0)
+
+    def test_photoid_view_returns_200(self):
+        """Test that the photo id view returns a 200."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        self.client.force_login(user)
+        photo = ImageFactory()
+        photo.owner = user.profile
+        photo.save()
+        response = self.client.get(reverse_lazy('individual_photo',
+                                                kwargs={'pk': photo.id}))
+        self.assertTrue(response.status_code == 200)
+
+    def test_photoid_view_returns_public_photo(self):
+        """Test that a user can view a public photo of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        photo = ImageFactory()
+        photo.published = 'public'
+        photo.owner = user.profile
+        photo.save()
+        response = self.client.get(reverse_lazy('individual_photo',
+                                                kwargs={'pk': photo.id}))
+        # import pdb; pdb.set_trace()
+        self.assertTrue(response.context_data['photo'])
+
+    def test_photoid_view_doesnt_return_private_photo(self):
+        """Test that a user cannot view a private photo of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        photo = ImageFactory()
+        photo.published = 'private'
+        photo.owner = user.profile
+        photo.save()
+        response = self.client.get(reverse_lazy('individual_photo',
+                                                kwargs={'pk': photo.id}))
+        with self.assertRaises(KeyError):
+            response.context_data['photo']
+
+    def test_photoid_view_returns_error_private_photo(self):
+        """Test that a user cannot view a private photo of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        photo = ImageFactory()
+        photo.published = 'private'
+        photo.owner = user.profile
+        photo.save()
+        response = self.client.get(reverse_lazy('individual_photo',
+                                                kwargs={'pk': photo.id}))
+        self.assertTrue(response.context_data['error'])
+
+    def test_photoid_user_views_own_private_photo(self):
+        """Test that a user can view their own private photo."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        self.client.force_login(user)
+        photo = ImageFactory()
+        photo.published = 'private'
+        photo.owner = user.profile
+        photo.save()
+        response = self.client.get(reverse_lazy('individual_photo',
+                                                kwargs={'pk': photo.id}))
+        # import pdb; pdb.set_trace()
+        self.assertTrue(response.context_data['photo'])
+
+    def test_albumid_view_returns_200(self):
+        """Test that the album id view returns a 200."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        self.client.force_login(user)
+        album = AlbumFactory()
+        album.owner = user.profile
+        album.save()
+        response = self.client.get(reverse_lazy('individual_album',
+                                                kwargs={'pk': album.id}))
+        self.assertTrue(response.status_code == 200)
+
+    def test_albumid_view_returns_public_album(self):
+        """Test that a user can view a public album of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        album = AlbumFactory()
+        album.published = 'public'
+        album.owner = user.profile
+        album.save()
+        response = self.client.get(reverse_lazy('individual_album',
+                                                kwargs={'pk': album.id}))
+        self.assertTrue(response.context_data['album'])
+
+    def test_albumid_view_doesnt_return_private_album(self):
+        """Test that a user cannot view a private album of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        album = AlbumFactory()
+        album.published = 'private'
+        album.owner = user.profile
+        album.save()
+        response = self.client.get(reverse_lazy('individual_album',
+                                                kwargs={'pk': album.id}))
+        with self.assertRaises(KeyError):
+            response.context_data['album']
+
+    def test_albumid_view_returns_error_private_album(self):
+        """Test that a user cannot view a private album of another user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        user2 = User()
+        user2.username = "maxrebo"
+        user2.set_password('itsaband')
+        user2.save()
+        self.client.force_login(user2)
+        album = AlbumFactory()
+        album.published = 'private'
+        album.owner = user.profile
+        album.save()
+        response = self.client.get(reverse_lazy('individual_album',
+                                                kwargs={'pk': album.id}))
+        self.assertTrue(response.context_data['error'])
+
+    def test_albumid_user_views_own_private_album(self):
+        """Test that a user can view their own private album."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        self.client.force_login(user)
+        album = AlbumFactory()
+        album.published = 'private'
+        album.owner = user.profile
+        album.save()
+        response = self.client.get(reverse_lazy('individual_album',
+                                                kwargs={'pk': album.id}))
+        self.assertTrue(response.context_data['album'])
