@@ -3,10 +3,8 @@ from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.conf import settings
 from django.urls import reverse_lazy
 
-from imager_profile.models import ImagerProfile
 from imager_images.models import Image, Album
 from imager_images.views import LibraryView, PhotoView, AlbumView, PhotoIdView, AlbumIdView
 
@@ -534,3 +532,63 @@ class ImageTestCase(TestCase):
         response = self.client.get(reverse_lazy('individual_album',
                                                 kwargs={'pk': album.id}))
         self.assertTrue(response.context_data['album'])
+
+    def submit_form(self):
+        """Submit a form to test."""
+        image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
+        response = self.client.post(reverse_lazy('add_photos'),
+                                    {'title': 'itsatitle',
+                                     'description': 'his greatness jabba',
+                                     'published': 'public',
+                                     'image': image})
+        return response
+
+    def new_user_signed_in(self):
+        """Make and sign in new user."""
+        user = User()
+        user.username = "jabba"
+        user.set_password('itspizza')
+        user.save()
+        self.client.force_login(user)
+        return user
+
+    def test_add_an_image_count(self):
+        """Test that adding an image increases the model count."""
+        self.new_user_signed_in()
+        images = Image.objects.count()
+        self.submit_form()
+        assert Image.objects.count() == images + 1
+
+    def test_add_an_image_correct_owner(self):
+        """Test that a new added image is owned by the user."""
+        user = self.new_user_signed_in()
+        users_images = user.profile.images.count()
+        self.submit_form()
+        assert user.profile.images.count() == users_images + 1
+
+    def test_add_two_images_correct_owner(self):
+        """Test that a new added images are owned by the user."""
+        user = self.new_user_signed_in()
+        users_images = user.profile.images.count()
+        self.submit_form()
+        self.submit_form()
+        assert user.profile.images.count() == users_images + 2
+
+    def test_add_an_image_correct_published(self):
+        """Test that a new added image has the right published type."""
+        user = self.new_user_signed_in()
+        self.submit_form()
+        assert user.profile.images.first().published == 'public'
+
+    def test_add_an_image_correct_decription(self):
+        """Test that a new added image has the right description."""
+        user = self.new_user_signed_in()
+        self.submit_form()
+        assert user.profile.images.first().description == 'his greatness jabba'
+
+    def test_new_image_in_users_library(self):
+        """Test that a new added image's description shows up in the library page."""
+        user = self.new_user_signed_in()
+        self.submit_form()
+        response = self.client.get(reverse_lazy('library'))
+        assert user.profile.images.first().description in str(response.content)
