@@ -66,6 +66,13 @@ class ImagerProfileCase(TestCase):
         this_user.save()
         self.assertEqual(ImagerProfile.active.count(), ImagerProfile.objects.count() - 1)
 
+    def test_profile_is_active_returns_user_is_active(self):
+        """Test active method on profile is same as user."""
+        this_user = User.objects.all()[0]
+        this_user.is_active = False
+        this_user.save()
+        self.assertFalse(this_user.profile.is_active())
+
     def test_change_profile_changes_user_profile(self):
         """Test changes on profile mean changes on user profile as well."""
         this_profile = ImagerProfile.objects.first()
