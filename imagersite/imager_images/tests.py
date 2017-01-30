@@ -273,6 +273,12 @@ class ImageTestCase(TestCase):
         album2.save()
         self.assertTrue(user1.profile.albums.count() == 2)
 
+    def test_album_string_method(self):
+        """Test string method on album model returns the expected string."""
+        album = Album.objects.first()
+        title = album.title
+        self.assertEqual(str(album), title)
+
     def test_libary_view_returns_200(self):
         """Test Library View returns a 200."""
         user = UserFactory.create()
