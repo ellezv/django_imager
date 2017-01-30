@@ -609,14 +609,14 @@ class ImageTestCase(TestCase):
         self.new_user_signed_in()
         albums = Album.objects.count()
         self.submit_add_album_form()
-        assert Album.objects.count() == albums + 1
+        self.assertTrue(Album.objects.count() == albums + 1)
 
     def test_add_an_album_correct_owner(self):
         """Test that a new added album is owned by the user."""
         user = self.new_user_signed_in()
         users_albums = user.profile.albums.count()
         self.submit_add_album_form()
-        assert user.profile.albums.count() == users_albums + 1
+        self.assertTrue(user.profile.albums.count() == users_albums + 1)
 
     def test_add_two_albums_correct_owner(self):
         """Test that a new added albums are owned by the user."""
@@ -624,23 +624,42 @@ class ImageTestCase(TestCase):
         users_albums = user.profile.albums.count()
         self.submit_add_album_form()
         self.submit_add_album_form()
-        assert user.profile.albums.count() == users_albums + 2
+        self.assertTrue(user.profile.albums.count() == users_albums + 2)
 
     def test_add_an_album_correct_published(self):
         """Test that a new added album has the right published type."""
         user = self.new_user_signed_in()
         self.submit_add_album_form()
-        assert user.profile.albums.first().published == 'public'
+        self.assertTrue(user.profile.albums.first().published == 'public')
 
     def test_add_an_album_correct_decription(self):
         """Test that a new added album has the right description."""
         user = self.new_user_signed_in()
         self.submit_add_album_form()
-        assert user.profile.albums.first().description == 'mostly hosting pod races'
+        self.assertTrue(user.profile.albums.first().description == 'mostly hosting pod races')
 
     def test_new_album_in_users_library(self):
         """Test that a new added album's description shows up in the library page."""
         user = self.new_user_signed_in()
         self.submit_add_album_form()
         response = self.client.get(reverse_lazy('library'))
-        assert user.profile.albums.first().description in str(response.content)
+        self.assertTrue(user.profile.albums.first().description in str(response.content))
+
+    def test_edit_photos_view_returns_200_if_logged_in(self):
+        """Test that the view is accessible when user is logged in."""
+        user = self.new_user_signed_in()
+        self.submit_add_image_form()
+        photo = user.profile.images.first()
+        response = self.client.get(reverse_lazy('edit_photo',
+                                                kwargs={'pk': photo.pk}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_photos_view_has_correct_template(self):
+        """Test edit photo view uses expected template."""
+        user = self.new_user_signed_in()
+        self.submit_add_image_form()
+        photo = user.profile.images.first()
+        response = self.client.get(reverse_lazy('edit_photo',
+                                                kwargs={'pk': photo.pk}))
+
+        self.assertTemplateUsed(response, 'imager_images/add_photo.html')
