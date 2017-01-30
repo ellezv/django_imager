@@ -1,5 +1,5 @@
 """Views for our imager_images app."""
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView
 from imager_images.models import Image, Album
 from django.utils import timezone
 from imager_images.forms import PhotoForm, AlbumForm
@@ -80,7 +80,6 @@ class AddPhotoView(CreateView):
     model = Image
     form_class = PhotoForm
     template_name = 'imager_images/add_photo.html'
-    # success_url = 'library'
 
     def form_valid(self, form):
         """Execute if form is valid."""
@@ -100,12 +99,45 @@ class AddAlbumView(CreateView):
     model = Album
     form_class = AlbumForm
     template_name = 'imager_images/add_album.html'
-    # success_url = 'library'
 
     def form_valid(self, form):
         """Execute if form is valid."""
         album = form.save()
         album.owner = self.request.user.profile
         album.date_created = timezone.now()
+        album.save()
+        return redirect('library')
+
+
+class PhotoEditView(UpdateView):
+    """A class based view to edit an image."""
+
+    model = Image
+    form_class = PhotoForm
+    template_name = 'imager_images/add_photo.html'
+
+    def form_valid(self, form):
+        """Execute if form is valid."""
+        photo = form.save()
+        photo.date_modified = timezone.now()
+        if photo.published == "public":# This needs to be fixed. only update if changed
+            photo.published_date = timezone.now()
+        photo.save()
+        return redirect('library')
+
+
+class AlbumEditView(UpdateView):
+    """A class based view to edit an album."""
+
+    model = Album
+    form_class = AlbumForm
+    template_name = 'imager_images/add_album.html'
+
+    def form_valid(self, form):
+        """Execute if form is valid."""
+        album = form.save()
+        album.date_modified = timezone.now()
+        if album.published == "public":# This needs to be fixed. only update if changed
+            album.published_date = timezone.now()
         album.save()
         return redirect('library')
