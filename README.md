@@ -3,6 +3,7 @@
 
 **Author:** Julien Wilson and Maelle Vance
 
+**Django Imager** is a full Django app that allows you to upload your personal images and share them with the world. You create and manage albums, add new photos to different albums or edit any of them.
 
 ## Getting Started
 
@@ -116,3 +117,5 @@ To get the full coverage report, after you have run the tests, type:
 - `/images/albums/(pk)/`
 - `/images/photos/add/`
 - `/images/albums/add/`
+- `/images/albums/(pk)/edit/`
+- `/images/photos/(pk)/edit/`
