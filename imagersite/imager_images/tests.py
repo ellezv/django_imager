@@ -684,7 +684,7 @@ class ImageTestCase(TestCase):
         self.assertTemplateUsed(response, 'imager_images/add_album.html')
 
     def test_edit_a_photo_title_changes_title(self):
-        """."""
+        """Test when an photo's title is edited, it changes the db."""
         user = self.new_user_signed_in()
         self.submit_add_image_form()
         photo = user.profile.images.first()
@@ -696,5 +696,21 @@ class ImageTestCase(TestCase):
                                      'published': 'public',
                                      })
         new_title = user.profile.images.first().title
+        self.assertNotEqual(old_title, new_title)
+        self.assertEqual(new_title, "edited title")
+
+    def test_edit_an_album_title_changes_title(self):
+        """Test when an album's title is edited, it changes the db."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        album = user.profile.albums.first()
+        old_title = album.title
+        self.client.post(reverse_lazy('edit_album',
+                                    kwargs={'pk': album.pk}),
+                                    {'title': 'edited title',
+                                     'description': 'edited description',
+                                     'published': 'public',
+                                     })
+        new_title = user.profile.albums.first().title
         self.assertNotEqual(old_title, new_title)
         self.assertEqual(new_title, "edited title")

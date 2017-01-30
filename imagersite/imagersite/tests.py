@@ -8,6 +8,28 @@ from imager_profile.models import ImagerProfile
 from imager_images.tests import UserFactory, ImageFactory, AlbumFactory
 
 
+class BareAppTests(TestCase):
+    """Test for the front end without data."""
+
+    def setUp(self):
+        """Set up for the tests."""
+        self.client = Client()
+        self.request = RequestFactory()
+
+    def test_home_view_status(self):
+        """Test home view is accessible."""
+        from imagersite.views import HomeView
+        req = self.request.get(reverse_lazy('home'))
+        view = HomeView.as_view()
+        response = view(req)
+        self.assertEqual(response.status_code, 200)
+
+    def test_home_route_uses_right_template(self):
+        """Test that home route uses the expected template."""
+        response = self.client.get(reverse_lazy('home'))
+        self.assertTemplateUsed(response, 'imagersite/home.html')
+
+
 class FrontEndTests(TestCase):
     """Tests for our front-end."""
 
