@@ -533,16 +533,6 @@ class ImageTestCase(TestCase):
                                                 kwargs={'pk': album.id}))
         self.assertTrue(response.context_data['album'])
 
-    def submit_form(self):
-        """Submit a form to test."""
-        image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
-        response = self.client.post(reverse_lazy('add_photos'),
-                                    {'title': 'itsatitle',
-                                     'description': 'his greatness jabba',
-                                     'published': 'public',
-                                     'image': image})
-        return response
-
     def new_user_signed_in(self):
         """Make and sign in new user."""
         user = User()
@@ -552,43 +542,105 @@ class ImageTestCase(TestCase):
         self.client.force_login(user)
         return user
 
+    def submit_add_image_form(self):
+        """Submit a form to test."""
+        image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
+        response = self.client.post(reverse_lazy('add_photos'),
+                                    {'title': 'itsatitle',
+                                     'description': 'his greatness jabba',
+                                     'published': 'public',
+                                     'image': image})
+        return response
+
     def test_add_an_image_count(self):
         """Test that adding an image increases the model count."""
         self.new_user_signed_in()
         images = Image.objects.count()
-        self.submit_form()
+        self.submit_add_image_form()
         assert Image.objects.count() == images + 1
 
     def test_add_an_image_correct_owner(self):
         """Test that a new added image is owned by the user."""
         user = self.new_user_signed_in()
         users_images = user.profile.images.count()
-        self.submit_form()
+        self.submit_add_image_form()
         assert user.profile.images.count() == users_images + 1
 
     def test_add_two_images_correct_owner(self):
         """Test that a new added images are owned by the user."""
         user = self.new_user_signed_in()
         users_images = user.profile.images.count()
-        self.submit_form()
-        self.submit_form()
+        self.submit_add_image_form()
+        self.submit_add_image_form()
         assert user.profile.images.count() == users_images + 2
 
     def test_add_an_image_correct_published(self):
         """Test that a new added image has the right published type."""
         user = self.new_user_signed_in()
-        self.submit_form()
+        self.submit_add_image_form()
         assert user.profile.images.first().published == 'public'
 
     def test_add_an_image_correct_decription(self):
         """Test that a new added image has the right description."""
         user = self.new_user_signed_in()
-        self.submit_form()
+        self.submit_add_image_form()
         assert user.profile.images.first().description == 'his greatness jabba'
 
     def test_new_image_in_users_library(self):
         """Test that a new added image's description shows up in the library page."""
         user = self.new_user_signed_in()
-        self.submit_form()
+        self.submit_add_image_form()
         response = self.client.get(reverse_lazy('library'))
         assert user.profile.images.first().description in str(response.content)
+
+    def submit_add_album_form(self):
+        """Submit a form to test add album."""
+        image = SimpleUploadedFile(name='test_image.jpg', content=open('imagersite/static/images.jpg', 'rb').read(), content_type='image/jpeg')
+        response = self.client.post(reverse_lazy('add_albums'),
+                                    {'title': 'itsanalbum',
+                                     'description': 'mostly hosting pod races',
+                                     'published': 'public',
+                                     'cover_image': image
+                                     })
+        return response
+
+    def test_add_an_album_count(self):
+        """Test that adding an album increases the model count."""
+        self.new_user_signed_in()
+        albums = Album.objects.count()
+        self.submit_add_album_form()
+        assert Album.objects.count() == albums + 1
+
+    def test_add_an_album_correct_owner(self):
+        """Test that a new added album is owned by the user."""
+        user = self.new_user_signed_in()
+        users_albums = user.profile.albums.count()
+        self.submit_add_album_form()
+        assert user.profile.albums.count() == users_albums + 1
+
+    def test_add_two_albums_correct_owner(self):
+        """Test that a new added albums are owned by the user."""
+        user = self.new_user_signed_in()
+        users_albums = user.profile.albums.count()
+        self.submit_add_album_form()
+        self.submit_add_album_form()
+        assert user.profile.albums.count() == users_albums + 2
+
+    def test_add_an_album_correct_published(self):
+        """Test that a new added album has the right published type."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        assert user.profile.albums.first().published == 'public'
+
+    def test_add_an_album_correct_decription(self):
+        """Test that a new added album has the right description."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        assert user.profile.albums.first().description == 'mostly hosting pod races'
+
+    def test_new_album_in_users_library(self):
+        """Test that a new added album's description shows up in the library page."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        response = self.client.get(reverse_lazy('library'))
+        assert user.profile.albums.first().description in str(response.content)

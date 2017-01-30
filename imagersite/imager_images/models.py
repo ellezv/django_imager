@@ -60,7 +60,10 @@ class Album(models.Model):
                               blank=True,
                               null=True
                               )
-    images = models.ManyToManyField(Image, related_name='albums')
+    images = models.ManyToManyField(Image, related_name='albums',
+                                    blank=True,
+                                    null=True
+                                    )
 
     def __str__(self):
         """Return title as string."""
