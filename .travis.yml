@@ -16,6 +16,7 @@ install:
 # command to run tests
 script: 
   - python imagersite/manage.py migrate
-  - coverage run imagersite/manage.py test
+  - cd imagersite
+  - coverage run ./manage.py test
 
 after_success: coveralls
