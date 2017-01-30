@@ -1,0 +1,56 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Your profile</title>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        {% if profile %}
+                        <h3 class="brand-heading">
+                        <br>
+                        This is {{ profile.user.username }}'s Profile</h3>
+                        <p class="intro-text">Here's some stuff about it</p>
+                        <ul>
+                            <li>Username: {{profile.user.username}}</li>
+
+                            <li>number of public images: {{ public_images }}</li>
+
+                            {% if user == profile.user %}
+                            <li>number of private images: {{ private_images }}</li>
+                            {% endif %}
+                            <li>address: {{ profile.address }}</li>
+
+                            <li>bio: {{ profile.bio }}</li>
+
+                            <li>website: {{ profile.website }}</li>
+
+                            <li>hireable: {{ profile.hireable }}</li>
+
+                            <li>travel radius: {{ profile.travel_radius }}</li>
+
+                            <li>phone number: {{ profile.phone_number }}</li>
+
+                            <li>camera type: {{ profile.camera_type }}</li>
+
+                            <li>type of photography: {{ profile.photography }}</li>
+
+                        </ul> 
+                        {% else %}
+                        <h3>{{ error }}</h3>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

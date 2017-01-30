@@ -1,0 +1,27 @@
+{% extends "imagersite/base.html" %}
+
+{% block content %}
+
+    <!-- Intro Header -->
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Django Imager</h1>
+                        <p class="intro-text">An Image Hosting Platform for You
+                            <br>Created by Maelle and Julien.</p>
+                            {% if user.is_authenticated %}
+                        <a href="{% url 'library' %}" class="btn btn-circle page-scroll">
+                            {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-circle page-scroll">
+                            {% endif %}
+                            <i class="fa fa-angle-double-down animated"></i>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
