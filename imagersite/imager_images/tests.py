@@ -663,3 +663,38 @@ class ImageTestCase(TestCase):
                                                 kwargs={'pk': photo.pk}))
 
         self.assertTemplateUsed(response, 'imager_images/add_photo.html')
+
+    def test_edit_album_view_returns_200_if_logged_in(self):
+        """Test that the view is accessible when user is logged in."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        album = user.profile.albums.first()
+        response = self.client.get(reverse_lazy('edit_album',
+                                                kwargs={'pk': album.pk}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_albums_view_has_correct_template(self):
+        """Test edit photo view uses expected template."""
+        user = self.new_user_signed_in()
+        self.submit_add_album_form()
+        album = user.profile.albums.first()
+        response = self.client.get(reverse_lazy('edit_album',
+                                                kwargs={'pk': album.pk}))
+
+        self.assertTemplateUsed(response, 'imager_images/add_album.html')
+
+    def test_edit_a_photo_title_changes_title(self):
+        """."""
+        user = self.new_user_signed_in()
+        self.submit_add_image_form()
+        photo = user.profile.images.first()
+        old_title = photo.title
+        self.client.post(reverse_lazy('edit_photo',
+                                    kwargs={'pk': photo.pk}),
+                                    {'title': 'edited title',
+                                     'description': 'mostly hosting pod races',
+                                     'published': 'public',
+                                     })
+        new_title = user.profile.images.first().title
+        self.assertNotEqual(old_title, new_title)
+        self.assertEqual(new_title, "edited title")
