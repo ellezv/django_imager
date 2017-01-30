@@ -1,6 +1,6 @@
 # Django Imager
-[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=front_end_4)](https://travis-ci.org/ellezv/django_imager)
-[![Coverage Status](https://coveralls.io/repos/github/ellezv/django_imager/badge.svg?branch=front_end_4)](https://coveralls.io/github/ellezv/django_imager?branch=front_end_4)
+[![Build Status](https://travis-ci.org/ellezv/django_imager.svg?branch=master](https://travis-ci.org/ellezv/django_imager)
+[![Coverage Status](https://coveralls.io/repos/github/ellezv/django_imager/badge.svg?branch=master)](https://coveralls.io/github/ellezv/django_imager?branch=master)
 
 **Author:** Julien Wilson and Maelle Vance
 
