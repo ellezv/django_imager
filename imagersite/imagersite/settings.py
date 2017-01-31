@@ -29,7 +29,7 @@ DEBUG = True
 ACCOUNT_ACTIVATION_DAYS = 7
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get('WEB_HOST', '')]
 
 
 # Application definition
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', ''),
         'USER': os.environ.get('DB_USER', ''),
         'PASSWORD': os.environ.get("DB_PASSWORD", ''),
-        'HOST': os.environ.get("HOST", ''),
+        'HOST': os.environ.get("DB_HOST", ''),
         'PORT': '5432',
         'TEST': {
             'NAME': 'IMAGER_TEST_DB'
@@ -136,7 +136,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
@@ -155,3 +155,4 @@ EMAIL_HOST_USER = 'julienimagersite@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EM_PASS', '')
 SERVER_EMAIL = 'julienimagersite@gmail.com'
 DEFAULT_FROM_EMAIL = "Imager Site"
+
