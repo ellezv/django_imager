@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$s_4a0klcb4rybr8to_bl+vnd2!jae=tx3396&)_v@#(pmknj*'
+SECRET_KEY = os.environ.get('SECRETKEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'imagersite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'imagerdb',
+        'NAME': os.environ.get('DB_NAME', ''),
         'USER': os.environ.get('DB_USER', ''),
         'PASSWORD': os.environ.get("DB_PASSWORD", ''),
-        'HOST': '127.0.0.1',
+        'HOST': os.environ.get("HOST", ''),
         'PORT': '5432',
         'TEST': {
             'NAME': 'IMAGER_TEST_DB'
