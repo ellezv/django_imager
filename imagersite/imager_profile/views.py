@@ -1,12 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 
-class ProfileView(TemplateView):
+class ProfileView(LoginRequiredMixin, TemplateView):
     """Class based view for user's own profile view."""
 
     template_name = "imager_profile/detail.html"
+    login_url = reverse_lazy("login")
 
     def get_context_data(self):
         """Extend get_context_data method to our data."""
