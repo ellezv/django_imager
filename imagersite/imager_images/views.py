@@ -1,5 +1,5 @@
 """Views for our imager_images app."""
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from imager_images.models import Image, Album
 from django.utils import timezone
 from imager_images.forms import PhotoForm, AlbumForm
@@ -30,6 +30,22 @@ class PhotoView(TemplateView):
         """Extending get_context_data method to add our data."""
         photos = Image.objects.filter(published='public').all()
         return {'photos': photos}
+
+
+class PhotoTagView(ListView):
+    """A view to show photos that match a tag."""
+    template_name = "imager_images/photos.html"
+    slug_field_name = "tag"
+    context_object_name = "photos"
+
+    def get_queryset(self):
+        return Image.objects.filter(tags__slug=self.kwargs.get("tag")).all()
+
+    def get_context_data(self, **kwargs):
+        import pdb; pdb.set_trace()
+        context = super(PhotoTagView, self).get_context_data(**kwargs)
+        context["tag"] = self.kwargs.get("tag")
+        return context
 
 
 class AlbumView(TemplateView):

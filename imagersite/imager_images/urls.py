@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from imager_images.views import LibraryView, PhotoView, AlbumView, \
-    PhotoIdView, AlbumIdView, AddPhotoView, AddAlbumView, PhotoEditView, AlbumEditView
+    PhotoIdView, PhotoTagView, AlbumIdView, AddPhotoView, AddAlbumView, PhotoEditView, AlbumEditView
 
 urlpatterns = [
     url(r'^library/$', LibraryView.as_view(), name="library"),
@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^photos/add/$', AddPhotoView.as_view(), name="add_photos"),
     url(r'^photos/(?P<pk>\d+)/edit/$', PhotoEditView.as_view(), name="edit_photo"),
     url(r'^albums/(?P<pk>\d+)/edit/$', AlbumEditView.as_view(), name="edit_album"),
+    url(r'^tagged/(?P<slug>[-\w]+)/$', PhotoTagView.as_view(), name="tagged_photos"),
+
 ]
