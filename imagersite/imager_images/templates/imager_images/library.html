@@ -50,6 +50,13 @@
                         </a>
                         
                         <p>{{ image.description }}</p>
+                        {% if image.tags.count %}
+                            <p>Tags:
+                            {% for tag in image.tags.all %}
+                                <a href={% url 'tagged_photos' slug=tag.name %}>  {{ tag.name }} </a>
+                            {% endfor %}
+                            </p>
+                        {% endif %}
                         {% if user == image.owner.user %}
                         <p><a href="{% url 'edit_photo' pk=image.pk %}" >Edit</a></p>
                         {% endif %}

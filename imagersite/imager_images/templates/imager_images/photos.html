@@ -20,11 +20,18 @@
                         <h3> Public Photos: </h3>
                         <ul>
                         {% for photo in photos %}
-                        <li>
-                        <a href="{% url 'individual_photo' pk=photo.pk %}">
-                        <img src="{{ photo.image.url }}" width="100px" height="100px"></a>
-                        <p>{{ photo.description }}</p>
-                        </li>
+                            <li>
+                                <a href="{% url 'individual_photo' pk=photo.pk %}">
+                                <img src="{{ photo.image.url }}" width="100px" height="100px"></a>
+                                <p>{{ photo.description }}</p>
+                                {% if photo.tags.count %}
+                                    <p>Tags:
+                                    {% for tag in photo.tags.all %}
+                                        <a href={% url 'tagged_photos' slug=tag.name %}>  {{ tag.name }} </a>
+                                    {% endfor %}
+                                    </p>
+                                {% endif %}
+                            </li>
                         {% endfor %}
                         </ul>
                     </div>

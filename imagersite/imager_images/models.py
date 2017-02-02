@@ -3,6 +3,8 @@
 from django.db import models
 from django.utils import timezone
 from imager_profile.models import ImagerProfile
+from taggit.managers import TaggableManager
+
 
 # Create your models here.
 
@@ -30,6 +32,7 @@ class Image(models.Model):
                               blank=True,
                               null=True
                               )
+    tags = TaggableManager()
 
     def __str__(self):
         """Return title as string."""

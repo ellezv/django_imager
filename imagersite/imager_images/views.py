@@ -1,5 +1,5 @@
 """Views for our imager_images app."""
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from imager_images.models import Image, Album
 from django.utils import timezone
 from imager_images.forms import PhotoForm, AlbumForm
@@ -32,6 +32,17 @@ class PhotoView(TemplateView):
         return {'photos': photos}
 
 
+class PhotoTagView(TemplateView):
+    """A class based view for Photo view."""
+
+    template_name = "imager_images/photos.html"
+
+    def get_context_data(self, slug):
+        """Extending get_context_data method to add our data."""
+        photos = Image.objects.filter(tags__slug=slug).all()
+        return {'photos': photos}
+
+
 class AlbumView(TemplateView):
     """Class based view for Album view."""
 
@@ -51,6 +62,7 @@ class PhotoIdView(TemplateView):
     def get_context_data(self, pk):
         """Extending get_context_data method for our data."""
         photo = Image.objects.get(pk=pk)
+        # import pdb; pdb.set_trace()
         if photo.published == 'public' or photo.owner.user == self.request.user:
             return {"photo": photo}
         else:
