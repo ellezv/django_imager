@@ -127,12 +127,6 @@ class FrontEndTests(TestCase):
         response = self.client.get(reverse_lazy('profile'))
         self.assertTemplateUsed(response, 'imager_profile/detail.html')
 
-    def test_profile_route_reroutes_login_if_logged_out(self):
-        """Test profile view reroutes to login page is user not logged in."""
-        # user1 = UserFactory()
-        response = self.client.get(reverse_lazy('profile'), follow=True)
-        self.assertTemplateUsed(response, 'registration/login.html')
-
     def test_logged_in_user_sees_private_data(self):
         """Test that a logged in user can see their own private data."""
         user = User()
