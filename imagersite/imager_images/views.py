@@ -1,9 +1,11 @@
 """Views for our imager_images app."""
 from django.views.generic import TemplateView, CreateView, UpdateView
-from imager_images.models import Image, Album
 from django.utils import timezone
-from imager_images.forms import PhotoForm, AlbumForm
 from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from imager_images.models import Image, Album
+from imager_images.forms import PhotoForm, AlbumForm
+from django.urls import reverse_lazy
 
 
 class LibraryView(TemplateView):
@@ -74,12 +76,14 @@ class AlbumIdView(TemplateView):
             return {"error": error}
 
 
-class AddPhotoView(CreateView):
+class AddPhotoView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """A class based view to add a picture."""
 
     model = Image
     form_class = PhotoForm
     template_name = 'imager_images/add_photo.html'
+    login_url = reverse_lazy("login")
+    permission_required = "images.add_image"
 
     def form_valid(self, form):
         """Execute if form is valid."""
@@ -93,12 +97,13 @@ class AddPhotoView(CreateView):
         return redirect('library')
 
 
-class AddAlbumView(CreateView):
+class AddAlbumView(LoginRequiredMixin, CreateView):
     """A class based view to add an Album."""
 
     model = Album
     form_class = AlbumForm
     template_name = 'imager_images/add_album.html'
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         """Execute if form is valid."""
@@ -109,12 +114,13 @@ class AddAlbumView(CreateView):
         return redirect('library')
 
 
-class PhotoEditView(UpdateView):
+class PhotoEditView(LoginRequiredMixin, UpdateView):
     """A class based view to edit an image."""
 
     model = Image
     form_class = PhotoForm
     template_name = 'imager_images/add_photo.html'
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         """Execute if form is valid."""
@@ -126,12 +132,13 @@ class PhotoEditView(UpdateView):
         return redirect('library')
 
 
-class AlbumEditView(UpdateView):
+class AlbumEditView(LoginRequiredMixin, UpdateView):
     """A class based view to edit an album."""
 
     model = Album
     form_class = AlbumForm
     template_name = 'imager_images/add_album.html'
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         """Execute if form is valid."""

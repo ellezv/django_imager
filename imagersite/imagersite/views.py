@@ -1,5 +1,5 @@
 """Views for Imager Site."""
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.views.generic import TemplateView
 
