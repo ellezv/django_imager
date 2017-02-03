@@ -1,0 +1,71 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Your Library</title>
+
+{% endblock %}
+
+{% block content %}
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h3 class="brand-heading">
+                        <br>
+                        {% if user.is_authenticated %}
+                        This is your Library</h3>
+                        
+                        <p class="add-button" ><a href="{% url 'add_photos' %}"> Add Photo </a></p>
+                        
+                        <p class="add-button"><a href="{% url 'add_albums' %}"> Add Album </a></p>
+                        <br/>
+                        
+                        <p class="library-text" class="intro-text">Here's some albums and photos you took.</p>
+                        
+                        <h3> Albums: </h3>
+                        {% for album in albums %}
+                        
+                        <li>
+                        <a href="{% url 'individual_album' pk=album.pk %}">
+                        
+                        <img src="{{ album.cover_image.url }}" width="100px" height="100px">
+                        </a>
+                        
+                        <p>{{ album.description }}</p>
+                        {% if user == album.owner.user %}
+                        <p><a href="{% url 'edit_album' pk=album.pk %}" >Edit</a></p>
+                        {% endif %}
+                        </li>
+                        {% endfor %}
+
+                        <h3> Pictures: </h3>
+                        {% for image in images %}
+                        
+                        <li>
+                        <a href="{% url 'individual_photo' pk=image.pk %}">
+                        
+                        <img src="{{ image.image.url }}" width="100px" height="100px">
+                        </a>
+                        
+                        <p>{{ image.description }}</p>
+                        {% if user == image.owner.user %}
+                        <p><a href="{% url 'edit_photo' pk=image.pk %}" >Edit</a></p>
+                        {% endif %}
+                        </li>
+                        {% endfor %}
+                        {% else %}
+
+                        <h2>You must be <a href="{% url 'login' %}">logged in</a> to view your library.</h2>
+                        <h3>If you don't have an account you can <a href="{% url 'registration_register' %}">register now</a></h3>
+                        <h4>So we can own all of the photos you take</h2>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

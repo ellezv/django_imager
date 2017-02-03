@@ -1,0 +1,29 @@
+{% extends "imagersite/base.html" %}
+
+{% block title %}
+
+<title>Add Album</title>
+
+{% endblock %}
+
+{% block content %}
+    <header class="intro" style="background-image: url({{ static_background }})">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h3 class="brand-heading">
+                        <br>
+                        <h3> Add an album </h3>
+
+                        <form method="POST" class="photo-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+                        </form>
+               </div>
+        </div>
+    </div>
+</header>
+
+{% endblock %}
