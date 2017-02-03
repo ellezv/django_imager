@@ -558,6 +558,23 @@ class ImageTestCase(TestCase):
                                      'image': image})
         return response
 
+    def test_add_photos_route_displays_right_template(self):
+        """Test add photos view displays right template."""
+        self.new_user_signed_in()
+        response = self.client.get(reverse_lazy('add_photos'))
+        self.assertTemplateUsed(response, 'imager_images/add_photo.html')
+
+    def test_add_photos_route_reroutes_login_if_logged_out(self):
+        """Test add photos view reroutes to login page if user not logged in."""
+        response = self.client.get(reverse_lazy('add_photos'), follow=True)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
+    def test_profile_route_reroutes_login_if_logged_out(self):
+        """Test profile view reroutes to login page is user not logged in."""
+        # user1 = UserFactory()
+        response = self.client.get(reverse_lazy('profile'), follow=True)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
     def test_add_an_image_count(self):
         """Test that adding an image increases the model count."""
         self.new_user_signed_in()
@@ -670,6 +687,11 @@ class ImageTestCase(TestCase):
 
         self.assertTemplateUsed(response, 'imager_images/add_photo.html')
 
+    def test_add_albums_route_reroutes_login_if_logged_out(self):
+        """Test add albums view reroutes to login page if user not logged in."""
+        response = self.client.get(reverse_lazy('add_albums'), follow=True)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
     def test_edit_album_view_returns_200_if_logged_in(self):
         """Test that the view is accessible when user is logged in."""
         user = self.new_user_signed_in()
@@ -689,18 +711,26 @@ class ImageTestCase(TestCase):
 
         self.assertTemplateUsed(response, 'imager_images/add_album.html')
 
+    def test_edit_albums_view_reroutes_login_if_not_logged_in(self):
+        """Test edit photo view uses expected template."""
+        # user = self.new_user_signed_in()
+        # self.submit_add_album_form()
+        album = Album.objects.first()
+        response = self.client.get(reverse_lazy('edit_album',
+                                                kwargs={'pk': album.pk}), follow=True)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
     def test_edit_a_photo_title_changes_title(self):
         """Test when an photo's title is edited, it changes the db."""
         user = self.new_user_signed_in()
         self.submit_add_image_form()
         photo = user.profile.images.first()
         old_title = photo.title
-        self.client.post(reverse_lazy('edit_photo',
-                                    kwargs={'pk': photo.pk}),
-                                    {'title': 'edited title',
-                                     'description': 'mostly hosting pod races',
-                                     'published': 'public',
-                                     })
+        self.client.post(reverse_lazy('edit_photo', kwargs={'pk': photo.pk}),
+                         {'title': 'edited title',
+                          'description': 'mostly hosting pod races',
+                          'published': 'public',
+                          })
         new_title = user.profile.images.first().title
         self.assertNotEqual(old_title, new_title)
         self.assertEqual(new_title, "edited title")
@@ -711,12 +741,18 @@ class ImageTestCase(TestCase):
         self.submit_add_album_form()
         album = user.profile.albums.first()
         old_title = album.title
-        self.client.post(reverse_lazy('edit_album',
-                                    kwargs={'pk': album.pk}),
-                                    {'title': 'edited title',
-                                     'description': 'edited description',
-                                     'published': 'public',
-                                     })
+        self.client.post(reverse_lazy('edit_album', kwargs={'pk': album.pk}),
+                         {'title': 'edited title',
+                          'description': 'edited description',
+                          'published': 'public',
+                          })
         new_title = user.profile.albums.first().title
         self.assertNotEqual(old_title, new_title)
         self.assertEqual(new_title, "edited title")
+
+    def test_edit_photo_view_reroutes_login_if_not_logged_in(self):
+        """Test edit photo view uses expected template."""
+        photo = Image.objects.first()
+        response = self.client.get(reverse_lazy('edit_photo',
+                                                kwargs={'pk': photo.pk}), follow=True)
+        self.assertTemplateUsed(response, 'registration/login.html')
