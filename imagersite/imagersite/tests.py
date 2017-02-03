@@ -122,6 +122,8 @@ class FrontEndTests(TestCase):
 
     def test_profile_route_uses_right_template(self):
         """Test profile view renders correct template."""
+        user1 = UserFactory()
+        self.client.force_login(user1)
         response = self.client.get(reverse_lazy('profile'))
         self.assertTemplateUsed(response, 'imager_profile/detail.html')
 
