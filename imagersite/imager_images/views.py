@@ -76,13 +76,14 @@ class AlbumIdView(TemplateView):
             return {"error": error}
 
 
-class AddPhotoView(LoginRequiredMixin, CreateView):
+class AddPhotoView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """A class based view to add a picture."""
 
     model = Image
     form_class = PhotoForm
     template_name = 'imager_images/add_photo.html'
     login_url = reverse_lazy("login")
+    permission_required = "images.add_image"
 
     def form_valid(self, form):
         """Execute if form is valid."""
