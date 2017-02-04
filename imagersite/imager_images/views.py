@@ -42,7 +42,6 @@ class PhotoTagView(ListView):
         return Image.objects.filter(tags__slug=self.kwargs.get("tag")).all()
 
     def get_context_data(self, **kwargs):
-        import pdb; pdb.set_trace()
         context = super(PhotoTagView, self).get_context_data(**kwargs)
         context["tag"] = self.kwargs.get("tag")
         return context
