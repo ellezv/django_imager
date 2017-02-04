@@ -555,7 +555,8 @@ class ImageTestCase(TestCase):
                                     {'title': 'itsatitle',
                                      'description': 'his greatness jabba',
                                      'published': 'public',
-                                     'image': image})
+                                     'image': image,
+                                     'tags': 'test'})
         return response
 
     def test_add_an_image_count(self):
@@ -700,6 +701,7 @@ class ImageTestCase(TestCase):
                                     {'title': 'edited title',
                                      'description': 'mostly hosting pod races',
                                      'published': 'public',
+                                     'tags': 'test tags'
                                      })
         new_title = user.profile.images.first().title
         self.assertNotEqual(old_title, new_title)
