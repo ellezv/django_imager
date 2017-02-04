@@ -94,3 +94,5 @@ venv_imager/
 # Ignore file in MEDIA but not directory itself
 imagersite/MEDIA/*
 !imagersite/MEDIA/.gitkeep
+
+vars.yml
