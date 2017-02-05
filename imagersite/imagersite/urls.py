@@ -29,6 +29,6 @@ urlpatterns = [
     url(r'^registration/', include("registration.backends.hmac.urls")),
     url(r'^profile/', include("imager_profile.urls")),
     url(r'^images/', include("imager_images.urls")),
-    url(r'^api/', include("api.urls"))
+    url(r'^api/v1/', include('api.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
