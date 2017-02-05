@@ -2,7 +2,7 @@ from rest_framework import serializers
 from imager_images.models import Image
 
 
-class SnippetSerializer(serializers.ModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
