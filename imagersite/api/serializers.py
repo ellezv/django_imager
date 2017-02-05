@@ -3,19 +3,18 @@ from imager_images.models import Image
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Image
         fields = (
             'id',
             'title',
-            'code',
             'description',
             'date_published',
             'date_modified',
             'date_uploaded',
             'published',
-            'image',
             'owner',
-            'tags'
+            'image'
         )
