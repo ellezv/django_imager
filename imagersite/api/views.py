@@ -1,6 +1,7 @@
 from imager_images.models import Image
 from api.serializers import ImageSerializer
 from rest_framework import viewsets, permissions
+from api.permissions import IsOwnerOrReadOnly
 
 
 # class ImageList(mixins.ListModelMixin,
@@ -18,6 +19,7 @@ from rest_framework import viewsets, permissions
 class ImageViewSet(viewsets.ModelViewSet):
 
     serializer_class = ImageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
     def get_queryset(self):
         """Get queryset for photographer."""
