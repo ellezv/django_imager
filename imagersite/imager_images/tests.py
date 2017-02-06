@@ -59,6 +59,13 @@ class ImageTestCase(TestCase):
         image.save()
         self.assertTrue(Image.objects.first().description == "This is a good image.")
 
+    def test_image_has_tag(self):
+        """Test that the image has a tag."""
+        image = Image.objects.first()
+        image.tags.add("test")
+        image.save()
+        self.assertTrue(Image.objects.first().tags.first().name == "test")
+
     def test_image_has_published(self):
         """Test the image published field."""
         image = Image.objects.first()
@@ -555,7 +562,8 @@ class ImageTestCase(TestCase):
                                     {'title': 'itsatitle',
                                      'description': 'his greatness jabba',
                                      'published': 'public',
-                                     'image': image})
+                                     'image': image,
+                                     'tags': 'test'})
         return response
 
     def test_add_an_image_count(self):
@@ -606,7 +614,8 @@ class ImageTestCase(TestCase):
                                     {'title': 'itsanalbum',
                                      'description': 'mostly hosting pod races',
                                      'published': 'public',
-                                     'cover_image': image
+                                     'cover_image': image,
+                                     'tags': 'test'
                                      })
         return response
 
@@ -695,11 +704,12 @@ class ImageTestCase(TestCase):
         self.submit_add_image_form()
         photo = user.profile.images.first()
         old_title = photo.title
-        self.client.post(reverse_lazy('edit_photo',
+        reponse = self.client.post(reverse_lazy('edit_photo',
                                     kwargs={'pk': photo.pk}),
                                     {'title': 'edited title',
                                      'description': 'mostly hosting pod races',
                                      'published': 'public',
+                                     'tags': 'tags'
                                      })
         new_title = user.profile.images.first().title
         self.assertNotEqual(old_title, new_title)
@@ -716,6 +726,7 @@ class ImageTestCase(TestCase):
                                     {'title': 'edited title',
                                      'description': 'edited description',
                                      'published': 'public',
+                                     'tags': 'tags'
                                      })
         new_title = user.profile.albums.first().title
         self.assertNotEqual(old_title, new_title)
