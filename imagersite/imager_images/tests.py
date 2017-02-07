@@ -704,7 +704,7 @@ class ImageTestCase(TestCase):
         self.submit_add_image_form()
         photo = user.profile.images.first()
         old_title = photo.title
-        reponse = self.client.post(reverse_lazy('edit_photo',
+        self.client.post(reverse_lazy('edit_photo',
                                     kwargs={'pk': photo.pk}),
                                     {'title': 'edited title',
                                      'description': 'mostly hosting pod races',
