@@ -25,6 +25,12 @@
                         <p class="library-text" class="intro-text">Here's some albums and photos you took.</p>
                         
                         <h3> Albums: </h3>
+                        {% if albums.has_previous %}
+                        <p><a href="?album={{ albums.previous_page_number }}" }}>Album Page {{ albums.previous_page_number }}</a></p>
+                        {% endif %}
+                        {% if albums.has_next %}
+                        <p><a href="?album={{ albums.next_page_number }}" }}>Album Page {{ albums.next_page_number }}</a></p>
+                        {% endif %}
                         {% for album in albums %}
                         
                         <li>
@@ -41,6 +47,12 @@
                         {% endfor %}
 
                         <h3> Pictures: </h3>
+                        {% if images.has_previous %}
+                        <p><a href="?image={{ images.previous_page_number }}" }} >Last Four Images</a></p>
+                        {% endif %}
+                        {% if images.has_next %}
+                        <p><a href="?image={{ images.next_page_number }}" }}>Next Four Images</a></p>
+                        {% endif %}
                         {% for image in images %}
                         
                         <li>

@@ -34,11 +34,11 @@ def library_view(request):
 
         images = image_pages.page(image_page)
         albums = album_pages.page(album_page)
-
-        # import pdb; pdb.set_trace()
-        return render(request, "imager_images/library.html", {
-            'albums': albums,
-            'images': images})
+    else:
+        albums = images = None
+    return render(request, "imager_images/library.html", {
+        'albums': albums,
+        'images': images})
 
 
 class PhotoView(TemplateView):
