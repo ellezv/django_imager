@@ -1,24 +1,44 @@
 """Views for our imager_images app."""
-from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.views.generic import TemplateView, CreateView, UpdateView
 from imager_images.models import Image, Album
 from django.utils import timezone
 from imager_images.forms import PhotoForm, AlbumForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from django.core.paginator import Paginator
 
 
-class LibraryView(TemplateView):
-    """A class based view for Library view."""
+# class LibraryView(TemplateView):
+#     """A class based view for Library view."""
 
-    template_name = "imager_images/library.html"
+#     template_name = "imager_images/library.html"
 
-    def get_context_data(self):
-        """Extending get_context_data method."""
-        if self.request.user.is_authenticated():
-            albums = self.request.user.profile.albums.all()
-            images = self.request.user.profile.images.all()
-        else:
-            albums = images = None
-        return {'albums': albums, 'images': images}
+#     def get_context_data(self):
+#         """Extending get_context_data method."""
+#         if self.request.user.is_authenticated():
+#             albums = self.request.user.profile.albums.all()
+#             images = self.request.user.profile.images.all()
+#         else:
+#             albums = images = None
+#         return {'albums': albums, 'images': images}
+
+def library_view(request):
+    """View for the user's own library."""
+    if request.user.is_authenticated():
+        all_albums = request.user.profile.albums.all()
+        album_page = request.GET.get("album", 1)
+        all_images = request.user.profile.images.all()
+        image_page = request.GET.get("image", 1)
+
+        album_pages = Paginator(all_albums, 4)
+        image_pages = Paginator(all_images, 4)
+
+        images = image_pages.page(image_page)
+        albums = album_pages.page(album_page)
+
+        # import pdb; pdb.set_trace()
+        return render(request, "imager_images/library.html", {
+            'albums': albums,
+            'images': images})
 
 
 class PhotoView(TemplateView):
