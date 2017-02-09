@@ -59,6 +59,13 @@ class ImageTestCase(TestCase):
         image.save()
         self.assertTrue(Image.objects.first().description == "This is a good image.")
 
+    def test_image_has_tag(self):
+        """Test that the image has a tag."""
+        image = Image.objects.first()
+        image.tags.add("test")
+        image.save()
+        self.assertTrue(Image.objects.first().tags.first().name == "test")
+
     def test_image_has_published(self):
         """Test the image published field."""
         image = Image.objects.first()
@@ -555,7 +562,8 @@ class ImageTestCase(TestCase):
                                     {'title': 'itsatitle',
                                      'description': 'his greatness jabba',
                                      'published': 'public',
-                                     'image': image})
+                                     'image': image,
+                                     'tags': 'test'})
         return response
 
     def test_add_photos_route_displays_right_template(self):
@@ -623,7 +631,8 @@ class ImageTestCase(TestCase):
                                     {'title': 'itsanalbum',
                                      'description': 'mostly hosting pod races',
                                      'published': 'public',
-                                     'cover_image': image
+                                     'cover_image': image,
+                                     'tags': 'test'
                                      })
         return response
 
@@ -726,11 +735,21 @@ class ImageTestCase(TestCase):
         self.submit_add_image_form()
         photo = user.profile.images.first()
         old_title = photo.title
+<<<<<<< HEAD
         self.client.post(reverse_lazy('edit_photo', kwargs={'pk': photo.pk}),
                          {'title': 'edited title',
                           'description': 'mostly hosting pod races',
                           'published': 'public',
                           })
+=======
+        self.client.post(reverse_lazy('edit_photo',
+                                    kwargs={'pk': photo.pk}),
+                                    {'title': 'edited title',
+                                     'description': 'mostly hosting pod races',
+                                     'published': 'public',
+                                     'tags': 'tags'
+                                     })
+>>>>>>> 7cd90ad7d62cc8faeb291f2d33fbb65188f15e55
         new_title = user.profile.images.first().title
         self.assertNotEqual(old_title, new_title)
         self.assertEqual(new_title, "edited title")
@@ -741,11 +760,21 @@ class ImageTestCase(TestCase):
         self.submit_add_album_form()
         album = user.profile.albums.first()
         old_title = album.title
+<<<<<<< HEAD
         self.client.post(reverse_lazy('edit_album', kwargs={'pk': album.pk}),
                          {'title': 'edited title',
                           'description': 'edited description',
                           'published': 'public',
                           })
+=======
+        self.client.post(reverse_lazy('edit_album',
+                                    kwargs={'pk': album.pk}),
+                                    {'title': 'edited title',
+                                     'description': 'edited description',
+                                     'published': 'public',
+                                     'tags': 'tags'
+                                     })
+>>>>>>> 7cd90ad7d62cc8faeb291f2d33fbb65188f15e55
         new_title = user.profile.albums.first().title
         self.assertNotEqual(old_title, new_title)
         self.assertEqual(new_title, "edited title")

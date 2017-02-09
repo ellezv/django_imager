@@ -22,7 +22,15 @@
                         <img src="{{ photo.image.url }}" style="max-width: 80%"">
                         <p>{{ photo.description }}</p>
                         <p> Author: <a href=" {% url 'user_profile' username=photo.owner.user.username %}">{{ photo.owner.user.username }}</a></p>
+                        {% if photo.tags.count %}
+                        <p>Tags:
+                        {% for tag in photo.tags.all %}
+                        <a href={% url 'tagged_photos' slug=tag.name %}>  {{ tag.name }} </a>
+                        {% endfor %}
+                        </p>
                         {% endif %}
+                        {% endif %}
+                        <h4>Other Images with these tags</h4>
                     </div>
                 </div>
             </div>
