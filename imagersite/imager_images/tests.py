@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse_lazy
 
 from imager_images.models import Image, Album
-from imager_images.views import LibraryView, PhotoView, AlbumView, PhotoIdView, AlbumIdView
+from imager_images.views import library_view, PhotoView, AlbumView, PhotoIdView, AlbumIdView
 
 import factory
 # Create your tests here.
@@ -290,10 +290,9 @@ class ImageTestCase(TestCase):
         """Test Library View returns a 200."""
         user = UserFactory.create()
         user.save()
-        view = LibraryView.as_view()
         req = self.request.get(reverse_lazy('library'))
         req.user = user
-        response = view(req)
+        response = library_view(req)
         self.assertTrue(response.status_code == 200)
 
     def test_logged_in_user_has_library(self):
