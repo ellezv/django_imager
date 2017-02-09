@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse_lazy
 
 from imager_images.models import Image, Album
-from imager_images.views import library_view, PhotoView, AlbumView, PhotoIdView, AlbumIdView
+from imager_images.views import library_view, PhotoView, AlbumView
 
 import factory
 # Create your tests here.
@@ -489,7 +489,7 @@ class ImageTestCase(TestCase):
         album.save()
         response = self.client.get(reverse_lazy('individual_album',
                                                 kwargs={'pk': album.id}))
-        self.assertTrue(response.context_data['album'])
+        self.assertTrue(response.context['album'])
 
     def test_albumid_view_doesnt_return_private_album(self):
         """Test that a user cannot view a private album of another user."""
@@ -509,7 +509,7 @@ class ImageTestCase(TestCase):
         response = self.client.get(reverse_lazy('individual_album',
                                                 kwargs={'pk': album.id}))
         with self.assertRaises(KeyError):
-            response.context_data['album']
+            response.context['album']
 
     def test_albumid_view_returns_error_private_album(self):
         """Test that a user cannot view a private album of another user."""
@@ -528,7 +528,7 @@ class ImageTestCase(TestCase):
         album.save()
         response = self.client.get(reverse_lazy('individual_album',
                                                 kwargs={'pk': album.id}))
-        self.assertTrue(response.context_data['error'])
+        self.assertTrue(response.context['error'])
 
     def test_albumid_user_views_own_private_album(self):
         """Test that a user can view their own private album."""
@@ -543,7 +543,7 @@ class ImageTestCase(TestCase):
         album.save()
         response = self.client.get(reverse_lazy('individual_album',
                                                 kwargs={'pk': album.id}))
-        self.assertTrue(response.context_data['album'])
+        self.assertTrue(response.context['album'])
 
     def new_user_signed_in(self):
         """Make and sign in new user."""

@@ -90,20 +90,21 @@ class PhotoIdView(TemplateView):
             return {"error": error}
 
 
-class AlbumIdView(TemplateView):
-    """A class based view for individual album view."""
-
-    template_name = "imager_images/album_id.html"
-
-    def get_context_data(self, pk):
-        """Extend get_context_data method for our data to render."""
-        album = Album.objects.get(pk=pk)
-        if album.published == 'public' or album.owner.user == self.request.user:
-            images = album.images.all()
-            return {"album": album, "images": images}
-        else:
-            error = "I'm sorry, that album is not available."
-            return {"error": error}
+def album_id_view(request, pk):
+    """View for album id page, image pagination."""
+    album = Album.objects.get(pk=pk)
+    if album.published == 'public' or album.owner.user == request.user:
+        all_images = album.images.all()
+        image_pages = Paginator(all_images, 4)
+        this_page = request.GET.get("page", 1)
+        images = image_pages.page(this_page)
+        return render(request, "imager_images/album_id.html", {
+            'album': album,
+            'images': images})
+    else:
+        error = "I'm sorry, that album is not available."
+        return render(request, "imager_images/album_id.html", {
+            'error': error})
 
 
 class AddPhotoView(CreateView):

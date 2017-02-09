@@ -21,6 +21,15 @@
                         <h3> {{ album.title }} </h3>
                         <h3>Author: <a href="{% url 'user_profile' username=album.owner.user.username %}">{{ album.owner.user.username }}</a></h3>
                         <ul>
+
+                        {% if images.has_previous %}
+                        <p><a href="?page={{ images.previous_page_number }}" }} >Last Four Images</a></p>
+                        {% endif %}
+                        {% if images.has_next %}
+                        <p><a href="?page={{ images.next_page_number }}" }}>Next Four Images</a></p>
+                        {% endif %}
+
+
                         {% for image in images %}
                         <li>
                         <img src="{{ image.image.url }}" style="width: 100%">
